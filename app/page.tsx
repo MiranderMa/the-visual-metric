@@ -36,75 +36,78 @@ const CalendarIcon = () => (
   </svg>
 );
 
-const YouTubeIcon = () => (
+const ExternalLinkIcon = () => (
   <svg
     viewBox="0 0 24 24"
-    fill="currentColor"
-    className="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    className="h-4 w-4"
   >
+    <path d="M14 5h5v5" />
+    <path d="M10 14 19 5" />
+    <path d="M19 13v6H5V5h6" />
+  </svg>
+);
+
+const YouTubeIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
     <path d="M23 12s0-3.4-.43-5.04a2.95 2.95 0 0 0-2.08-2.08C18.85 4.45 12 4.45 12 4.45s-6.85 0-8.49.43A2.95 2.95 0 0 0 1.43 6.96C1 8.6 1 12 1 12s0 3.4.43 5.04a2.95 2.95 0 0 0 2.08 2.08c1.64.43 8.49.43 8.49.43s6.85 0 8.49-.43a2.95 2.95 0 0 0 2.08-2.08C23 15.4 23 12 23 12Zm-13.2 3.2V8.8l5.8 3.2z" />
   </svg>
 );
 
+const POWER_BI_URL =
+  "https://app.powerbi.com/reportEmbed?reportId=ccd7c4dd-366a-40de-808e-0e0c52db879a&autoAuth=true&ctid=c5f56b69-1dec-4cb5-9c01-f8752ee17dd7";
+
 const projects = [
-  {
-    id: 1,
-    title: "A Greener Tomorrow",
-    description:
-      "An interactive dashboard exploring global sustainability trends and progress.",
-    type: "Full Dashboard",
-    category: "Environment",
-    date: "Jan 2026",
-    bg: "bg-[#EAF1EB]",
-  },
   {
     id: 2,
     title: "Cities in Focus",
     description:
-      "Visualizing how cities grow, move and thrive around the world.",
+      "Visualizing how cities grow, move and thrive through thoughtful visual storytelling.",
     type: "Full Dashboard",
     category: "Society",
-    date: "Dec 2025",
+    date: "Coming Soon",
     bg: "bg-[#EDF2F4]",
   },
   {
     id: 3,
     title: "The Creative Economy",
     description:
-      "A data story celebrating the people and industries behind creative work.",
+      "A data story exploring the people, industries and trends behind creative work.",
     type: "Full Dashboard",
     category: "Economy",
-    date: "Nov 2025",
+    date: "Coming Soon",
     bg: "bg-[#241A22]",
   },
   {
     id: 4,
     title: "Healthier Lives",
     description:
-      "Exploring global health trends and what helps people live longer, healthier lives.",
+      "Exploring health trends and the factors that influence healthier lives.",
     type: "Full Dashboard",
     category: "Health",
-    date: "Oct 2025",
+    date: "Coming Soon",
     bg: "bg-[#EAF2F2]",
   },
   {
     id: 5,
     title: "Education Matters",
     description:
-      "A global view of education, access and opportunity through data.",
+      "A visual exploration of education, access and opportunity through data.",
     type: "Custom Visual",
     category: "Education",
-    date: "Sep 2025",
+    date: "Coming Soon",
     bg: "bg-[#F4EFE7]",
   },
   {
     id: 6,
     title: "A Healthier Planet",
     description:
-      "An interactive look at our changing planet and the path toward a more resilient future.",
+      "An interactive look at environmental indicators and our changing planet.",
     type: "Full Dashboard",
     category: "Climate",
-    date: "Aug 2025",
+    date: "Coming Soon",
     bg: "bg-[#111D29]",
   },
 ];
@@ -113,7 +116,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#FAFAF8] text-[#1A1A1A]">
       {/* HEADER */}
-      <header className="bg-[#20201D] text-white">
+      <header className="sticky top-0 z-50 bg-[#20201D] text-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
           {/* LOGO */}
           <div className="flex items-center gap-4">
@@ -128,18 +131,16 @@ export default function Home() {
               <h1 className="text-xl font-medium tracking-tight">
                 The Visual Metric
               </h1>
+
               <p className="mt-1 text-[9px] tracking-[0.28em] text-[#DCC9B6]">
                 DATA · DESIGN · IMPACT
               </p>
             </div>
           </div>
 
-          {/* NAV */}
+          {/* NAVIGATION */}
           <nav className="hidden items-center gap-8 text-sm md:flex">
-            <a
-              href="#home"
-              className="border-b border-[#DCC9B6] pb-1"
-            >
+            <a href="#home" className="border-b border-[#DCC9B6] pb-1">
               Home
             </a>
 
@@ -157,10 +158,7 @@ export default function Home() {
               Custom Visuals
             </a>
 
-            <a
-              href="#about"
-              className="transition hover:text-[#DCC9B6]"
-            >
+            <a href="#about" className="transition hover:text-[#DCC9B6]">
               About Me
             </a>
 
@@ -173,10 +171,7 @@ export default function Home() {
               YouTube
             </a>
 
-            <a
-              href="#contact"
-              className="transition hover:text-[#DCC9B6]"
-            >
+            <a href="#contact" className="transition hover:text-[#DCC9B6]">
               Contact
             </a>
           </nav>
@@ -230,7 +225,7 @@ export default function Home() {
                 HERO IMAGE
               </p>
               <p className="mt-3 text-sm text-[#9A9A9A]">
-                Editorial image will go here
+                Your final editorial artwork will go here
               </p>
             </div>
           </div>
@@ -247,10 +242,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FEATURED PROJECTS */}
+      {/* FEATURED WORK */}
       <section id="dashboards" className="px-6 py-16">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-8 flex items-end justify-between">
+          <div className="mb-10 flex items-end justify-between">
             <div>
               <p className="text-xs tracking-[0.35em] text-[#6F6F6F]">
                 FEATURED WORK
@@ -269,13 +264,74 @@ export default function Home() {
             </a>
           </div>
 
+          {/* FIRST LIVE DASHBOARD */}
+          <article className="mb-8 overflow-hidden border border-[#DDDCD7] bg-white">
+            <div className="grid lg:grid-cols-[1.45fr_0.55fr]">
+              {/* LIVE POWER BI REPORT */}
+              <div className="relative min-h-[420px] overflow-hidden bg-[#F1F1EE]">
+                <iframe
+                  src={POWER_BI_URL}
+                  title="Interactive Performance Dashboard"
+                  className="absolute inset-0 h-full w-full border-0"
+                  allowFullScreen
+                />
+              </div>
+
+              {/* PROJECT INFORMATION */}
+              <div className="flex flex-col justify-between p-8 md:p-10">
+                <div>
+                  <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
+                    FEATURED DASHBOARD
+                  </p>
+
+                  <h3 className="mt-4 text-3xl font-medium leading-tight tracking-[-0.03em]">
+                    Interactive Performance Dashboard
+                  </h3>
+
+                  <p className="mt-5 text-sm leading-7 text-[#707078]">
+                    An interactive Power BI experience designed to transform
+                    operational data into clear insights through KPI tracking,
+                    performance trends and intuitive visual storytelling.
+                  </p>
+
+                  <div className="mt-7 space-y-4 border-t border-[#EFEFEB] pt-6 text-sm text-[#696971]">
+                    <div className="flex items-center gap-3">
+                      <FolderIcon />
+                      <span>Full Dashboard</span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <TagIcon />
+                      <span>Performance Analytics</span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <CalendarIcon />
+                      <span>September 2026</span>
+                    </div>
+                  </div>
+                </div>
+
+                <a
+                  href={POWER_BI_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-9 inline-flex w-fit items-center gap-3 bg-[#5A4638] px-6 py-4 text-xs font-semibold tracking-[0.14em] text-white transition hover:bg-[#47372C]"
+                >
+                  VIEW LIVE DASHBOARD
+                  <ExternalLinkIcon />
+                </a>
+              </div>
+            </div>
+          </article>
+
+          {/* OTHER PROJECTS */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <article
                 key={project.id}
                 className="border border-[#E0E0DC] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-lg"
               >
-                {/* DASHBOARD PLACEHOLDER */}
                 <div
                   className={`flex aspect-[16/9] items-center justify-center ${project.bg}`}
                 >
@@ -286,7 +342,7 @@ export default function Home() {
                         : "text-[#777]"
                     }`}
                   >
-                    PROJECT IMAGE
+                    PROJECT COMING SOON
                   </span>
                 </div>
 
@@ -298,7 +354,6 @@ export default function Home() {
                   {project.description}
                 </p>
 
-                {/* METADATA ICONS */}
                 <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-[#EFEFEB] pt-4 text-xs text-[#6B6B73]">
                   <div className="flex items-center gap-2">
                     <FolderIcon />
@@ -383,7 +438,10 @@ export default function Home() {
 
           <div className="flex min-h-[320px] items-center justify-center border border-[#E7E7E3] bg-white">
             <div className="text-center text-[#8A8A8A]">
-              <YouTubeIcon />
+              <div className="mx-auto flex justify-center">
+                <YouTubeIcon />
+              </div>
+
               <p className="mt-4 text-sm">Featured YouTube Video</p>
             </div>
           </div>
@@ -412,10 +470,7 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer
-        id="contact"
-        className="bg-[#20201D] px-6 py-10 text-white"
-      >
+      <footer id="contact" className="bg-[#20201D] px-6 py-10 text-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
             <div className="flex items-end gap-[3px]">
@@ -427,6 +482,7 @@ export default function Home() {
 
             <div>
               <h3 className="text-xl">The Visual Metric</h3>
+
               <p className="mt-1 text-[9px] tracking-[0.28em] text-[#DCC9B6]">
                 DATA · DESIGN · IMPACT
               </p>
