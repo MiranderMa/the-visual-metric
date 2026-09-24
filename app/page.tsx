@@ -73,8 +73,11 @@ const DASHBOARD_2 =
 const DASHBOARD_3 =
   "https://app.powerbi.com/view?r=eyJrIjoiOGZjOGEyOTMtZGRlOS00YTFhLWI2ZDMtZWZlNzllNTk5OGExIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
+const DASHBOARD_4 =
+  "https://app.fabric.microsoft.com/view?r=eyJrIjoiMTg0M2FkOTUtMThhZC00MGNlLThkYmQtMTFjMDE4MDQ4NDM0IiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
+
 /* =========================================================
-   DASHBOARD CARDS
+   THREE SMALL DASHBOARD CARDS
 ========================================================= */
 
 const dashboardCards = [
@@ -99,6 +102,17 @@ const dashboardCards = [
     category: "Business Analytics",
     date: "Sep 2026",
     url: DASHBOARD_3,
+  },
+  {
+    id: 4,
+    number: "04",
+    title: "Visual Insights Dashboard",
+    description:
+      "A visual analytics experience designed to transform detailed data into clear insights through interactive reporting and thoughtful visual storytelling.",
+    type: "Full Dashboard",
+    category: "Visual Analytics",
+    date: "Sep 2026",
+    url: DASHBOARD_4,
   },
 ];
 
@@ -272,10 +286,10 @@ export default function Home() {
           </div>
 
           {/* =================================================
-              DASHBOARD 01 — LARGE FEATURED DASHBOARD
+              DASHBOARD 01 — LARGE FEATURED
           ================================================= */}
           <article className="mb-10 overflow-hidden border border-[#DDDCD7] bg-white">
-            {/* TOP PROJECT HEADER */}
+            {/* TOP BAR */}
             <div className="flex flex-col gap-5 border-b border-[#E7E7E3] px-6 py-6 md:flex-row md:items-center md:justify-between">
               <div>
                 <div className="flex items-center gap-4">
@@ -342,11 +356,11 @@ export default function Home() {
           </article>
 
           {/* =================================================
-              DASHBOARDS 02 + 03
+              DASHBOARDS 02 / 03 / 04
           ================================================= */}
           <div
             id="all-projects"
-            className="grid gap-6 md:grid-cols-2"
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
           >
             {dashboardCards.map((project) => (
               <article
@@ -373,7 +387,7 @@ export default function Home() {
                     {project.number}
                   </div>
 
-                  {/* HOVER BUTTON */}
+                  {/* HOVER ACTION */}
                   <a
                     href={project.url}
                     target="_blank"
@@ -393,7 +407,7 @@ export default function Home() {
                 </h3>
 
                 {/* DESCRIPTION */}
-                <p className="mt-2 min-h-[52px] text-sm leading-6 text-[#707078]">
+                <p className="mt-2 min-h-[72px] text-sm leading-6 text-[#707078]">
                   {project.description}
                 </p>
 
@@ -452,7 +466,7 @@ export default function Home() {
             more memorable.
           </p>
 
-          {/* FEATURED CUSTOM VISUAL REPORT */}
+          {/* FEATURED CUSTOM VISUAL */}
           <article className="mt-10 overflow-hidden border border-[#DDDCD7] bg-[#FAFAF8]">
             <div className="border-b border-[#E7E7E3] px-6 py-6">
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
@@ -493,14 +507,9 @@ export default function Home() {
             </div>
           </article>
 
-          {/* FUTURE CUSTOM VISUAL CARDS */}
+          {/* FUTURE VISUALS */}
           <div className="mt-8 grid gap-5 md:grid-cols-4">
-            {[
-              "KPI Cards",
-              "Pareto",
-              "Deneb",
-              "Cohort",
-            ].map((visual) => (
+            {["KPI Cards", "Pareto", "Deneb", "Cohort"].map((visual) => (
               <div
                 key={visual}
                 className="flex aspect-square items-center justify-center border border-[#E7E7E3] bg-[#FAFAF8] transition duration-300 hover:-translate-y-1 hover:border-[#5A4638]"
