@@ -57,7 +57,7 @@ const YouTubeIcon = () => (
 );
 
 const POWER_BI_URL =
-  "https://app.powerbi.com/reportEmbed?reportId=ccd7c4dd-366a-40de-808e-0e0c52db879a&autoAuth=true&ctid=c5f56b69-1dec-4cb5-9c01-f8752ee17dd7";
+  "https://app.fabric.microsoft.com/view?r=eyJrIjoiMTg0M2FkOTUtMThhZC00MGNlLThkYmQtMTFjMDE4MDQ4NDM0IiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
 const projects = [
   {
