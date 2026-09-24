@@ -60,49 +60,68 @@ const YouTubeIcon = () => (
   </svg>
 );
 
-const POWER_BI_URL =
-  "https://app.powerbi.com/reportEmbed?reportId=ccd7c4dd-366a-40de-808e-0e0c52db879a&autoAuth=true&ctid=c5f56b69-1dec-4cb5-9c01-f8752ee17dd7";
+/* -------------------------------------------------------
+   POWER BI LINKS
+------------------------------------------------------- */
 
-const CUSTOM_VISUAL_DASHBOARD_URL =
-  "https://app.powerbi.com/view?r=eyJrIjoiODUzNmNjZTMtNDUxZi00YjljLWFiNTEtOWU5ODljZDkxNDgzIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
+const DASHBOARD_1 =
+  "https://app.powerbi.com/view?r=eyJrIjoiMWIwNGJkOWQtYzZmMy00OTljLTg0OTQtNTM4NzAzOTQ0N2NjIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
-const projects = [
+const DASHBOARD_2 =
+  "https://app.powerbi.com/view?r=eyJrIjoiOGZjOGEyOTMtZGRlOS00YTFhLWI2ZDMtZWZlNzllNTk5OGExIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
+
+const DASHBOARD_3 =
+  "https://app.powerbi.com/view?r=eyJrIjoiMTg0M2FkOTUtMThhZC00MGNlLThkYmQtMTFjMDE4MDQ4NDM0IiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
+
+const DASHBOARD_4 =
+  "https://app.powerbi.com/view?r=eyJrIjoiMTg0M2FkOTUtMThhZC00MGNlLThkYmQtMTFjMDE4MDQ4NDM0IiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
+
+/* -------------------------------------------------------
+   THREE SMALL PROJECT CARDS
+------------------------------------------------------- */
+
+const dashboardCards = [
+  {
+    id: 2,
+    number: "02",
+    title: "Insight Explorer",
+    description:
+      "An interactive Power BI experience designed to surface patterns, comparisons and meaningful business insights.",
+    type: "Full Dashboard",
+    category: "Business Analytics",
+    date: "Sep 2026",
+    url: DASHBOARD_2,
+  },
   {
     id: 3,
-    title: "The Creative Economy",
+    number: "03",
+    title: "Visual Performance Story",
     description:
-      "A data story exploring the people, industries and trends behind creative work.",
-    type: "Full Dashboard",
-    category: "Economy",
-    date: "Coming Soon",
-    bg: "bg-[#241A22]",
+      "A data-led dashboard combining analytical exploration with clear, editorial visual storytelling.",
+    type: "Dashboard",
+    category: "Data Storytelling",
+    date: "Sep 2026",
+    url: DASHBOARD_3,
   },
   {
     id: 4,
-    title: "Healthier Lives",
+    number: "04",
+    title: "Executive Insights",
     description:
-      "Exploring health trends and the factors that influence healthier lives.",
+      "A polished interactive report created to turn detailed information into clear and accessible decision-making insights.",
     type: "Full Dashboard",
-    category: "Health",
-    date: "Coming Soon",
-    bg: "bg-[#EAF2F2]",
-  },
-  {
-    id: 5,
-    title: "Education Matters",
-    description:
-      "A visual exploration of education, access and opportunity through data.",
-    type: "Custom Visual",
-    category: "Education",
-    date: "Coming Soon",
-    bg: "bg-[#F4EFE7]",
+    category: "Executive Analytics",
+    date: "Sep 2026",
+    url: DASHBOARD_4,
   },
 ];
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#FAFAF8] text-[#1A1A1A]">
-      {/* HEADER */}
+      {/* ===================================================
+          HEADER
+      =================================================== */}
       <header className="sticky top-0 z-50 bg-[#20201D] text-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
           {/* LOGO */}
@@ -125,7 +144,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* NAV */}
+          {/* NAVIGATION */}
           <nav className="hidden items-center gap-8 text-sm md:flex">
             <a
               href="#home"
@@ -174,7 +193,9 @@ export default function Home() {
         </div>
       </header>
 
-      {/* HERO */}
+      {/* ===================================================
+          HERO
+      =================================================== */}
       <section
         id="home"
         className="mx-auto grid max-w-7xl gap-8 border-b border-[#E7E7E3] px-6 py-14 md:grid-cols-[1.05fr_0.95fr] md:py-20"
@@ -213,7 +234,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* HERO IMAGE */}
+        {/* HERO VISUAL */}
         <div className="relative min-h-[430px] overflow-hidden bg-[#F2F1EE]">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
@@ -222,7 +243,7 @@ export default function Home() {
               </p>
 
               <p className="mt-3 text-sm text-[#9A9A9A]">
-                Your final editorial artwork will go here
+                Final editorial artwork
               </p>
             </div>
           </div>
@@ -239,9 +260,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FULL DASHBOARDS */}
+      {/* ===================================================
+          DASHBOARDS
+      =================================================== */}
       <section id="dashboards" className="px-6 py-16">
         <div className="mx-auto max-w-7xl">
+          {/* SECTION HEADER */}
           <div className="mb-10 flex items-end justify-between">
             <div>
               <p className="text-xs tracking-[0.35em] text-[#6F6F6F]">
@@ -254,39 +278,50 @@ export default function Home() {
             </div>
 
             <a
-              href="#"
+              href="#all-projects"
               className="hidden border-b border-[#5A4638] pb-1 text-xs font-semibold tracking-[0.12em] md:block"
             >
               VIEW ALL PROJECTS →
             </a>
           </div>
 
-          {/* LIVE DASHBOARD 1 */}
+          {/* ===================================================
+              DASHBOARD 1 — LARGE FEATURED PROJECT
+          =================================================== */}
+
           <article className="mb-8 overflow-hidden border border-[#DDDCD7] bg-white">
             <div className="grid lg:grid-cols-[1.45fr_0.55fr]">
-              <div className="relative min-h-[420px] overflow-hidden bg-[#F1F1EE]">
+              {/* LIVE POWER BI */}
+              <div className="relative min-h-[470px] overflow-hidden bg-[#F1F1EE]">
                 <iframe
-                  src={POWER_BI_URL}
-                  title="Interactive Performance Dashboard"
+                  src={DASHBOARD_1}
+                  title="Featured Power BI Dashboard"
                   className="absolute inset-0 h-full w-full border-0"
                   allowFullScreen
                 />
               </div>
 
+              {/* INFORMATION */}
               <div className="flex flex-col justify-between p-8 md:p-10">
                 <div>
-                  <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
-                    FEATURED DASHBOARD
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
+                      FEATURED DASHBOARD
+                    </p>
 
-                  <h3 className="mt-4 text-3xl font-medium leading-tight tracking-[-0.03em]">
+                    <span className="text-xs tracking-[0.2em] text-[#A6A19A]">
+                      01
+                    </span>
+                  </div>
+
+                  <h3 className="mt-5 text-3xl font-medium leading-tight tracking-[-0.03em]">
                     Interactive Performance Dashboard
                   </h3>
 
                   <p className="mt-5 text-sm leading-7 text-[#707078]">
                     An interactive Power BI experience designed to transform
-                    operational data into clear insights through KPI tracking,
-                    performance trends and intuitive visual storytelling.
+                    detailed information into clear, accessible insights
+                    through thoughtful analysis and visual storytelling.
                   </p>
 
                   <div className="mt-7 space-y-4 border-t border-[#EFEFEB] pt-6 text-sm text-[#696971]">
@@ -308,7 +343,7 @@ export default function Home() {
                 </div>
 
                 <a
-                  href={POWER_BI_URL}
+                  href={DASHBOARD_1}
                   target="_blank"
                   rel="noreferrer"
                   className="mt-9 inline-flex w-fit items-center gap-3 bg-[#5A4638] px-6 py-4 text-xs font-semibold tracking-[0.14em] text-white transition hover:bg-[#47372C]"
@@ -320,94 +355,64 @@ export default function Home() {
             </div>
           </article>
 
-          {/* LIVE DASHBOARD 2 */}
-          <article className="mb-8 overflow-hidden border border-[#DDDCD7] bg-white">
-            <div className="grid lg:grid-cols-[1.45fr_0.55fr]">
-              <div className="relative min-h-[420px] overflow-hidden bg-[#F1F1EE]">
-                <iframe
-                  src={CUSTOM_VISUAL_DASHBOARD_URL}
-                  title="Custom Visual Analytics Dashboard"
-                  className="absolute inset-0 h-full w-full border-0"
-                  allowFullScreen
-                />
-              </div>
+          {/* ===================================================
+              DASHBOARDS 2, 3, 4 — THREE CARD ROW
+          =================================================== */}
 
-              <div className="flex flex-col justify-between p-8 md:p-10">
-                <div>
-                  <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
-                    FEATURED DASHBOARD
-                  </p>
-
-                  <h3 className="mt-4 text-3xl font-medium leading-tight tracking-[-0.03em]">
-                    Custom Visual Analytics Dashboard
-                  </h3>
-
-                  <p className="mt-5 text-sm leading-7 text-[#707078]">
-                    An interactive Power BI dashboard combining analytical
-                    storytelling with custom visual design to make complex
-                    information easier to explore and understand.
-                  </p>
-
-                  <div className="mt-7 space-y-4 border-t border-[#EFEFEB] pt-6 text-sm text-[#696971]">
-                    <div className="flex items-center gap-3">
-                      <FolderIcon />
-                      <span>Full Dashboard</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <TagIcon />
-                      <span>Custom Visuals</span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <CalendarIcon />
-                      <span>September 2026</span>
-                    </div>
-                  </div>
-                </div>
-
-                <a
-                  href={CUSTOM_VISUAL_DASHBOARD_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-9 inline-flex w-fit items-center gap-3 bg-[#5A4638] px-6 py-4 text-xs font-semibold tracking-[0.14em] text-white transition hover:bg-[#47372C]"
-                >
-                  VIEW LIVE DASHBOARD
-                  <ExternalLinkIcon />
-                </a>
-              </div>
-            </div>
-          </article>
-
-          {/* OTHER PROJECT CARDS */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
+          <div
+            id="all-projects"
+            className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
+          >
+            {dashboardCards.map((project) => (
               <article
                 key={project.id}
-                className="border border-[#E0E0DC] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                className="group overflow-hidden border border-[#E0E0DC] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                <div
-                  className={`flex aspect-[16/9] items-center justify-center ${project.bg}`}
-                >
-                  <span
-                    className={`text-xs tracking-[0.18em] ${
-                      project.id === 3
-                        ? "text-white/70"
-                        : "text-[#777]"
-                    }`}
+                {/* LIVE PREVIEW */}
+                <div className="relative aspect-[16/9] overflow-hidden bg-[#F3F1EC]">
+                  <iframe
+                    src={project.url}
+                    title={project.title}
+                    className="pointer-events-none absolute left-0 top-0 border-0"
+                    style={{
+                      width: "172%",
+                      height: "172%",
+                      transform: "scale(0.58)",
+                      transformOrigin: "top left",
+                    }}
+                    tabIndex={-1}
+                  />
+
+                  {/* NUMBER */}
+                  <div className="absolute left-4 top-4 z-10 flex h-8 w-8 items-center justify-center bg-[#20201D]/90 text-[10px] tracking-[0.15em] text-white backdrop-blur">
+                    {project.number}
+                  </div>
+
+                  {/* OPEN DASHBOARD OVERLAY */}
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="absolute inset-0 z-20 flex items-center justify-center bg-[#20201D]/0 opacity-0 transition duration-300 group-hover:bg-[#20201D]/55 group-hover:opacity-100"
                   >
-                    PROJECT COMING SOON
-                  </span>
+                    <span className="inline-flex items-center gap-2 bg-white px-5 py-3 text-[10px] font-semibold tracking-[0.15em] text-[#20201D]">
+                      VIEW DASHBOARD
+                      <ExternalLinkIcon />
+                    </span>
+                  </a>
                 </div>
 
-                <h3 className="mt-4 text-xl font-medium tracking-tight">
+                {/* PROJECT TITLE */}
+                <h3 className="mt-5 text-xl font-medium tracking-tight">
                   {project.title}
                 </h3>
 
-                <p className="mt-2 min-h-[48px] text-sm leading-6 text-[#707078]">
+                {/* DESCRIPTION */}
+                <p className="mt-2 min-h-[72px] text-sm leading-6 text-[#707078]">
                   {project.description}
                 </p>
 
+                {/* METADATA */}
                 <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-[#EFEFEB] pt-4 text-xs text-[#6B6B73]">
                   <div className="flex items-center gap-2">
                     <FolderIcon />
@@ -424,13 +429,26 @@ export default function Home() {
                     <span>{project.date}</span>
                   </div>
                 </div>
+
+                {/* MOBILE / ACCESSIBLE LINK */}
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold tracking-[0.14em] text-[#5A4638] lg:hidden"
+                >
+                  VIEW DASHBOARD
+                  <ExternalLinkIcon />
+                </a>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CUSTOM VISUALS */}
+      {/* ===================================================
+          CUSTOM VISUALS
+      =================================================== */}
       <section
         id="visuals"
         className="border-y border-[#E7E7E3] bg-white px-6 py-20"
@@ -445,55 +463,16 @@ export default function Home() {
           </h2>
 
           <p className="mt-5 max-w-2xl leading-7 text-[#6F6F6F]">
-            Custom Power BI visuals, Deneb experiments and dashboard components
-            designed to make information clearer and more engaging.
+            Custom Power BI visuals, Deneb experiments and dashboard
+            components created to make information clearer, more engaging and
+            more memorable.
           </p>
 
-          {/* LIVE CUSTOM VISUAL DASHBOARD */}
-          <article className="mt-10 overflow-hidden border border-[#DDDCD7] bg-[#FAFAF8]">
-            <div className="grid md:grid-cols-[1.35fr_0.65fr]">
-              <div className="relative min-h-[360px] overflow-hidden bg-[#F2F1EE]">
-                <iframe
-                  src={CUSTOM_VISUAL_DASHBOARD_URL}
-                  title="Custom Visual Analytics Dashboard"
-                  className="absolute inset-0 h-full w-full border-0"
-                  allowFullScreen
-                />
-              </div>
-
-              <div className="flex flex-col justify-center p-8">
-                <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
-                  CUSTOM VISUAL FEATURE
-                </p>
-
-                <h3 className="mt-4 text-2xl font-medium">
-                  Custom Visual Analytics Dashboard
-                </h3>
-
-                <p className="mt-4 text-sm leading-7 text-[#707078]">
-                  A showcase of custom Power BI visual design, interactive
-                  analysis and data storytelling.
-                </p>
-
-                <a
-                  href={CUSTOM_VISUAL_DASHBOARD_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-7 inline-flex w-fit items-center gap-3 text-xs font-semibold tracking-[0.12em] text-[#5A4638]"
-                >
-                  EXPLORE PROJECT
-                  <ExternalLinkIcon />
-                </a>
-              </div>
-            </div>
-          </article>
-
-          {/* FUTURE CUSTOM VISUALS */}
-          <div className="mt-8 grid gap-5 md:grid-cols-4">
+          <div className="mt-10 grid gap-5 md:grid-cols-4">
             {["KPI Cards", "Pareto", "Deneb", "Cohort"].map((visual) => (
               <div
                 key={visual}
-                className="flex aspect-square items-center justify-center border border-[#E7E7E3] bg-[#FAFAF8] transition hover:border-[#5A4638]"
+                className="flex aspect-square items-center justify-center border border-[#E7E7E3] bg-[#FAFAF8] transition duration-300 hover:-translate-y-1 hover:border-[#5A4638]"
               >
                 <span className="text-sm">{visual}</span>
               </div>
@@ -502,7 +481,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* YOUTUBE */}
+      {/* ===================================================
+          YOUTUBE
+      =================================================== */}
       <section className="px-6 py-20">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2">
           <div className="flex flex-col justify-center">
@@ -544,7 +525,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ABOUT */}
+      {/* ===================================================
+          ABOUT
+      =================================================== */}
       <section
         id="about"
         className="border-t border-[#E7E7E3] bg-white px-6 py-20"
@@ -565,7 +548,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* ===================================================
+          FOOTER
+      =================================================== */}
       <footer
         id="contact"
         className="bg-[#20201D] px-6 py-10 text-white"
