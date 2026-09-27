@@ -133,7 +133,7 @@ export default function Home() {
           HEADER
       ===================================================== */}
       <header className="sticky top-0 z-50 bg-[#20201D] text-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
             <div className="flex items-end gap-[3px]">
               <span className="h-4 w-[5px] bg-[#DCC9B6]" />
@@ -202,11 +202,11 @@ export default function Home() {
       </header>
 
       {/* =====================================================
-          CENTERED HERO
+          CENTERED HERO — REDUCED SPACING
       ===================================================== */}
       <section
         id="home"
-        className="border-b border-[#E7E7E3] bg-white px-6 py-20 md:py-28"
+        className="border-b border-[#E7E7E3] bg-white px-6 py-10 md:py-14"
       >
         <div className="mx-auto max-w-7xl text-center">
           <h2 className="text-4xl font-normal leading-none tracking-[-0.045em] md:text-6xl lg:text-7xl">
@@ -219,7 +219,7 @@ export default function Home() {
             </span>
           </h2>
 
-          <p className="mx-auto mt-8 max-w-4xl text-lg leading-8 text-[#60606B] md:text-xl">
+          <p className="mx-auto mt-5 max-w-4xl text-lg leading-8 text-[#60606B] md:text-xl">
             Turning data into meaningful stories through beautiful dashboards
             and thoughtful visuals.
           </p>
@@ -231,17 +231,17 @@ export default function Home() {
       ===================================================== */}
       <section
         id="dashboards"
-        className="bg-[#FCFBF9] px-6 py-16"
+        className="bg-[#FCFBF9] px-6 py-10 md:py-12"
       >
         <div className="mx-auto max-w-7xl">
           {/* SECTION HEADER */}
-          <div className="mb-10 flex items-end justify-between">
+          <div className="mb-6 flex items-end justify-between">
             <div>
               <p className="text-xs tracking-[0.35em] text-[#77777D]">
                 FEATURED WORK
               </p>
 
-              <h2 className="mt-3 text-4xl font-normal tracking-[-0.03em] text-[#1A1A1A] md:text-5xl">
+              <h2 className="mt-2 text-4xl font-normal tracking-[-0.03em] text-[#1A1A1A] md:text-5xl">
                 Explore Dashboards
               </h2>
             </div>
@@ -258,18 +258,18 @@ export default function Home() {
           {/* =================================================
               LATEST / FEATURED EXC DASHBOARD
           ================================================= */}
-          <article className="mb-10 overflow-hidden border border-[#E3E0DA] bg-white">
-            <div className="flex flex-col gap-5 border-b border-[#E7E7E3] px-6 py-6 md:flex-row md:items-center md:justify-between">
+          <article className="mb-8 overflow-hidden border border-[#E3E0DA] bg-white">
+            <div className="flex flex-col gap-4 border-b border-[#E7E7E3] px-6 py-5 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
                   LATEST DASHBOARD
                 </p>
 
-                <h3 className="mt-3 text-2xl font-medium tracking-[-0.02em] md:text-3xl">
+                <h3 className="mt-2 text-2xl font-medium tracking-[-0.02em] md:text-3xl">
                   EXC Dashboard
                 </h3>
 
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-[#707078]">
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-[#707078]">
                   An executive-focused Power BI dashboard designed to provide a
                   clear view of key performance metrics, trends and operational
                   insights.
@@ -287,7 +287,7 @@ export default function Home() {
               </a>
             </div>
 
-            <div className="relative h-[72vh] min-h-[620px] w-full overflow-hidden bg-white md:h-[82vh] md:min-h-[700px]">
+            <div className="relative h-[68vh] min-h-[560px] w-full overflow-hidden bg-white md:h-[76vh] md:min-h-[640px]">
               <iframe
                 src={EXC_DASHBOARD}
                 title="EXC Dashboard"
@@ -296,7 +296,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="flex flex-col gap-5 border-t border-[#E7E7E3] px-6 py-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-4 border-t border-[#E7E7E3] px-6 py-5 md:flex-row md:items-center md:justify-between">
               <p className="max-w-2xl text-sm leading-7 text-[#707078]">
                 A focused executive reporting experience combining performance
                 indicators, business trends and operational insights in one
@@ -332,7 +332,7 @@ export default function Home() {
             {dashboardCards.map((project) => (
               <article
                 key={project.id}
-                className="group overflow-hidden rounded-sm border border-[#E4E2DD] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="group overflow-hidden border border-[#E4E2DD] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="relative aspect-[16/9] overflow-hidden bg-white">
                   <iframe
@@ -355,15 +355,15 @@ export default function Home() {
                   </a>
                 </div>
 
-                <h3 className="mt-5 text-xl font-medium tracking-tight">
+                <h3 className="mt-4 text-xl font-medium tracking-tight">
                   {project.title}
                 </h3>
 
-                <p className="mt-2 min-h-[72px] text-sm leading-6 text-[#707078]">
+                <p className="mt-2 min-h-[60px] text-sm leading-6 text-[#707078]">
                   {project.description}
                 </p>
 
-                <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-[#EFEFEB] pt-4 text-xs text-[#6B6B73]">
+                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-[#EFEFEB] pt-4 text-xs text-[#6B6B73]">
                   <div className="flex items-center gap-2">
                     <FolderIcon />
                     <span>{project.type}</span>
@@ -384,7 +384,7 @@ export default function Home() {
                   href={project.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold tracking-[0.14em] text-[#5A4638]"
+                  className="mt-4 inline-flex items-center gap-2 text-[10px] font-semibold tracking-[0.14em] text-[#5A4638]"
                 >
                   VIEW FULL DASHBOARD
                   <ExternalLinkIcon />
@@ -400,7 +400,7 @@ export default function Home() {
       ===================================================== */}
       <section
         id="visuals"
-        className="border-y border-[#E7E7E3] bg-white px-6 py-20"
+        className="border-y border-[#E7E7E3] bg-white px-6 py-14"
       >
         <div className="mx-auto max-w-7xl">
           <p className="text-xs tracking-[0.35em] text-[#6F6F6F]">
@@ -411,19 +411,19 @@ export default function Home() {
             Designed beyond the defaults.
           </h2>
 
-          <p className="mt-5 max-w-2xl leading-7 text-[#6F6F6F]">
+          <p className="mt-4 max-w-2xl leading-7 text-[#6F6F6F]">
             Custom Power BI visuals, Deneb experiments and dashboard components
             created to make information clearer, more engaging and more
             memorable.
           </p>
 
-          <article className="mt-10 overflow-hidden border border-[#DDDCD7] bg-white">
-            <div className="border-b border-[#E7E7E3] px-6 py-6">
+          <article className="mt-8 overflow-hidden border border-[#DDDCD7] bg-white">
+            <div className="border-b border-[#E7E7E3] px-6 py-5">
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
                 CUSTOM VISUAL FEATURE
               </p>
 
-              <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div className="mt-2 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
                   <h3 className="text-2xl font-medium">
                     Custom Visual Analytics
@@ -447,7 +447,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative h-[60vh] min-h-[520px] overflow-hidden bg-white">
+            <div className="relative h-[55vh] min-h-[480px] overflow-hidden bg-white">
               <iframe
                 src={CUSTOM_VISUAL_DASHBOARD}
                 title="Custom Visual Analytics"
@@ -457,7 +457,7 @@ export default function Home() {
             </div>
           </article>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-4">
+          <div className="mt-6 grid gap-5 md:grid-cols-4">
             {["KPI Cards", "Pareto", "Deneb", "Cohort"].map((visual) => (
               <div
                 key={visual}
@@ -473,7 +473,7 @@ export default function Home() {
       {/* =====================================================
           YOUTUBE
       ===================================================== */}
-      <section className="bg-white px-6 py-20">
+      <section className="bg-white px-6 py-14">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2">
           <div className="flex flex-col justify-center">
             <p className="text-xs tracking-[0.35em] text-[#6F6F6F]">
@@ -484,7 +484,7 @@ export default function Home() {
               Power BI with Mimi
             </h2>
 
-            <p className="mt-6 max-w-lg leading-7 text-[#6F6F6F]">
+            <p className="mt-4 max-w-lg leading-7 text-[#6F6F6F]">
               Practical Power BI tutorials, dashboard walkthroughs, custom
               visuals and data storytelling.
             </p>
@@ -493,14 +493,14 @@ export default function Home() {
               href="https://youtube.com/@powerbiwithmimi"
               target="_blank"
               rel="noreferrer"
-              className="mt-8 inline-flex w-fit items-center gap-3 bg-[#20201D] px-6 py-4 text-sm text-white transition hover:bg-[#5A4638]"
+              className="mt-6 inline-flex w-fit items-center gap-3 bg-[#20201D] px-6 py-4 text-sm text-white transition hover:bg-[#5A4638]"
             >
               <YouTubeIcon />
               Watch on YouTube →
             </a>
           </div>
 
-          <div className="flex min-h-[320px] items-center justify-center border border-[#E7E7E3] bg-white">
+          <div className="flex min-h-[280px] items-center justify-center border border-[#E7E7E3] bg-white">
             <div className="text-center text-[#8A8A8A]">
               <div className="mx-auto flex justify-center">
                 <YouTubeIcon />
@@ -519,18 +519,18 @@ export default function Home() {
       ===================================================== */}
       <section
         id="about"
-        className="border-t border-[#E7E7E3] bg-white px-6 py-20"
+        className="border-t border-[#E7E7E3] bg-white px-6 py-14"
       >
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-xs tracking-[0.35em] text-[#6F6F6F]">
             ABOUT
           </p>
 
-          <h2 className="mt-4 text-4xl font-normal text-[#5A4638] md:text-5xl">
+          <h2 className="mt-3 text-4xl font-normal text-[#5A4638] md:text-5xl">
             Data. Design. Decisions.
           </h2>
 
-          <p className="mx-auto mt-6 max-w-2xl leading-7 text-[#6F6F6F]">
+          <p className="mx-auto mt-4 max-w-2xl leading-7 text-[#6F6F6F]">
             I create data visualizations that inform, inspire and make complex
             information feel human.
           </p>
@@ -542,7 +542,7 @@ export default function Home() {
       ===================================================== */}
       <footer
         id="contact"
-        className="bg-[#20201D] px-6 py-10 text-white"
+        className="bg-[#20201D] px-6 py-9 text-white"
       >
         <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-4">
