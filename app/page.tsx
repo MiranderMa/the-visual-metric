@@ -95,11 +95,11 @@ const dashboardCards = [
   {
     id: 3,
     number: "03",
-    title: "Insight Explorer",
+    title: "EXC Dashboard",
     description:
-      "An interactive dashboard designed to surface patterns, comparisons and meaningful business insights.",
+      "An executive-focused Power BI dashboard designed to provide a clear view of key performance metrics, trends and operational insights.",
     type: "Full Dashboard",
-    category: "Business Analytics",
+    category: "Executive Reporting",
     date: "Sep 2026",
     url: DASHBOARD_3,
   },
@@ -119,12 +119,9 @@ const dashboardCards = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#FAFAF8] text-[#1A1A1A]">
-      {/* =====================================================
-          HEADER
-      ===================================================== */}
+      {/* HEADER */}
       <header className="sticky top-0 z-50 bg-[#20201D] text-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          {/* LOGO */}
           <div className="flex items-center gap-4">
             <div className="flex items-end gap-[3px]">
               <span className="h-4 w-[5px] bg-[#DCC9B6]" />
@@ -144,12 +141,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* NAVIGATION */}
           <nav className="hidden items-center gap-8 text-sm md:flex">
-            <a
-              href="#home"
-              className="border-b border-[#DCC9B6] pb-1"
-            >
+            <a href="#home" className="border-b border-[#DCC9B6] pb-1">
               Home
             </a>
 
@@ -193,9 +186,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* =====================================================
-          HERO
-      ===================================================== */}
+      {/* HERO */}
       <section
         id="home"
         className="mx-auto grid max-w-7xl gap-8 border-b border-[#E7E7E3] px-6 py-14 md:grid-cols-[1.05fr_0.95fr] md:py-20"
@@ -234,7 +225,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* HERO IMAGE PLACEHOLDER */}
         <div className="relative min-h-[430px] overflow-hidden bg-[#F2F1EE]">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
@@ -260,12 +250,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* =====================================================
-          FULL DASHBOARDS
-      ===================================================== */}
+      {/* FULL DASHBOARDS */}
       <section id="dashboards" className="px-6 py-16">
         <div className="mx-auto max-w-7xl">
-          {/* SECTION TITLE */}
           <div className="mb-10 flex items-end justify-between">
             <div>
               <p className="text-xs tracking-[0.35em] text-[#6F6F6F]">
@@ -285,11 +272,8 @@ export default function Home() {
             </a>
           </div>
 
-          {/* =================================================
-              DASHBOARD 01 — LARGE FEATURED
-          ================================================= */}
+          {/* DASHBOARD 01 */}
           <article className="mb-10 overflow-hidden border border-[#DDDCD7] bg-white">
-            {/* TOP BAR */}
             <div className="flex flex-col gap-5 border-b border-[#E7E7E3] px-6 py-6 md:flex-row md:items-center md:justify-between">
               <div>
                 <div className="flex items-center gap-4">
@@ -318,7 +302,6 @@ export default function Home() {
               </a>
             </div>
 
-            {/* LARGE LIVE REPORT */}
             <div className="relative h-[72vh] min-h-[620px] w-full overflow-hidden bg-[#F1F1EE] md:h-[85vh] md:min-h-[720px]">
               <iframe
                 src={DASHBOARD_1}
@@ -328,7 +311,6 @@ export default function Home() {
               />
             </div>
 
-            {/* METADATA */}
             <div className="flex flex-col gap-5 border-t border-[#E7E7E3] px-6 py-6 md:flex-row md:items-center md:justify-between">
               <p className="max-w-2xl text-sm leading-7 text-[#707078]">
                 An interactive Power BI experience designed to transform
@@ -355,9 +337,7 @@ export default function Home() {
             </div>
           </article>
 
-          {/* =================================================
-              DASHBOARDS 02 / 03 / 04
-          ================================================= */}
+          {/* DASHBOARDS 02 / 03 / 04 */}
           <div
             id="all-projects"
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
@@ -367,7 +347,6 @@ export default function Home() {
                 key={project.id}
                 className="group overflow-hidden border border-[#E0E0DC] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                {/* LIVE PREVIEW */}
                 <div className="relative aspect-[16/9] overflow-hidden bg-[#F3F1EC]">
                   <iframe
                     src={project.url}
@@ -382,12 +361,10 @@ export default function Home() {
                     tabIndex={-1}
                   />
 
-                  {/* NUMBER */}
                   <div className="absolute left-4 top-4 z-10 flex h-9 w-9 items-center justify-center bg-[#20201D]/90 text-[10px] tracking-[0.15em] text-white backdrop-blur">
                     {project.number}
                   </div>
 
-                  {/* HOVER ACTION */}
                   <a
                     href={project.url}
                     target="_blank"
@@ -401,17 +378,14 @@ export default function Home() {
                   </a>
                 </div>
 
-                {/* TITLE */}
                 <h3 className="mt-5 text-xl font-medium tracking-tight">
                   {project.title}
                 </h3>
 
-                {/* DESCRIPTION */}
                 <p className="mt-2 min-h-[72px] text-sm leading-6 text-[#707078]">
                   {project.description}
                 </p>
 
-                {/* METADATA */}
                 <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-[#EFEFEB] pt-4 text-xs text-[#6B6B73]">
                   <div className="flex items-center gap-2">
                     <FolderIcon />
@@ -444,9 +418,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* =====================================================
-          CUSTOM VISUALS
-      ===================================================== */}
+      {/* CUSTOM VISUALS */}
       <section
         id="visuals"
         className="border-y border-[#E7E7E3] bg-white px-6 py-20"
@@ -466,7 +438,6 @@ export default function Home() {
             more memorable.
           </p>
 
-          {/* FEATURED CUSTOM VISUAL */}
           <article className="mt-10 overflow-hidden border border-[#DDDCD7] bg-[#FAFAF8]">
             <div className="border-b border-[#E7E7E3] px-6 py-6">
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
@@ -507,25 +478,20 @@ export default function Home() {
             </div>
           </article>
 
-          {/* FUTURE VISUALS */}
           <div className="mt-8 grid gap-5 md:grid-cols-4">
             {["KPI Cards", "Pareto", "Deneb", "Cohort"].map((visual) => (
               <div
                 key={visual}
                 className="flex aspect-square items-center justify-center border border-[#E7E7E3] bg-[#FAFAF8] transition duration-300 hover:-translate-y-1 hover:border-[#5A4638]"
               >
-                <span className="text-sm">
-                  {visual}
-                </span>
+                <span className="text-sm">{visual}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* =====================================================
-          YOUTUBE
-      ===================================================== */}
+      {/* YOUTUBE */}
       <section className="px-6 py-20">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2">
           <div className="flex flex-col justify-center">
@@ -567,9 +533,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* =====================================================
-          ABOUT
-      ===================================================== */}
+      {/* ABOUT */}
       <section
         id="about"
         className="border-t border-[#E7E7E3] bg-white px-6 py-20"
@@ -590,9 +554,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* =====================================================
-          FOOTER
-      ===================================================== */}
+      {/* FOOTER */}
       <footer
         id="contact"
         className="bg-[#20201D] px-6 py-10 text-white"
