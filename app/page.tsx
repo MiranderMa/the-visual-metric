@@ -64,36 +64,31 @@ const YouTubeIcon = () => (
    DASHBOARD LINKS
 ========================================================= */
 
-/* PREVIOUS FEATURED DASHBOARD */
 const PERFORMANCE_DASHBOARD =
   "https://app.powerbi.com/view?r=eyJrIjoiMWIwNGJkOWQtYzZmMy00OTljLTg0OTQtNTM4NzAzOTQ0N2NjIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
-/* CUSTOM VISUAL DASHBOARD */
 const CUSTOM_VISUAL_DASHBOARD =
   "https://app.fabric.microsoft.com/view?r=eyJrIjoiODUzNmNjZTMtNDUxZi00YjljLWFiNTEtOWU5ODljZDkxNDgzIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
-/* EXC DASHBOARD — NOW FEATURED */
 const EXC_DASHBOARD =
   "https://app.powerbi.com/view?r=eyJrIjoiOGZjOGEyOTMtZGRlOS00YTFhLWI2ZDMtZWZlNzllNTk5OGExIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
-/* COST ORBIT / VISUAL INSIGHTS */
 const VISUAL_INSIGHTS_DASHBOARD =
   "https://app.fabric.microsoft.com/view?r=eyJrIjoiMTg0M2FkOTUtMThhZC00MGNlLThkYmQtMTFjMDE4MDQ4NDM0IiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
-/* NEW DASHBOARD */
 const NEW_DASHBOARD =
   "https://app.fabric.microsoft.com/view?r=eyJrIjoiN2JkMjNmMmMtMDFhNC00Yzc2LTliOGItMWZjOGFhOTNiMzdkIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
 /* =========================================================
-   DASHBOARD GRID
+   DASHBOARD CARDS
 ========================================================= */
 
 const dashboardCards = [
   {
     id: "performance",
-    title: "Interactive Performance Dashboard",
+    title: "Performance Overview",
     description:
-      "An interactive Power BI experience designed to transform detailed information into clear and accessible insights through thoughtful analysis and visual storytelling.",
+      "An interactive Power BI experience designed to turn performance data into clear, accessible business insights.",
     type: "Full Dashboard",
     category: "Performance Analytics",
     date: "Sep 2026",
@@ -103,7 +98,7 @@ const dashboardCards = [
     id: "custom-visual",
     title: "Custom Visual Analytics",
     description:
-      "An interactive Power BI experience combining custom visuals, analytical storytelling and thoughtful data design.",
+      "An interactive dashboard combining custom visuals, analytical storytelling and thoughtful data design.",
     type: "Full Dashboard",
     category: "Custom Visuals",
     date: "Sep 2026",
@@ -113,7 +108,7 @@ const dashboardCards = [
     id: "visual-insights",
     title: "Visual Insights Dashboard",
     description:
-      "A visual analytics experience designed to transform detailed data into clear insights through interactive reporting and thoughtful visual storytelling.",
+      "A visual analytics experience designed to transform detailed information into clear interactive insights.",
     type: "Full Dashboard",
     category: "Visual Analytics",
     date: "Sep 2026",
@@ -123,7 +118,7 @@ const dashboardCards = [
     id: "new-dashboard",
     title: "Interactive Analytics Dashboard",
     description:
-      "An interactive Power BI report designed to present key metrics, patterns and insights through clear and engaging visual analysis.",
+      "An interactive Power BI report presenting key metrics, patterns and insights through clear visual analysis.",
     type: "Full Dashboard",
     category: "Data Analytics",
     date: "Sep 2026",
@@ -207,100 +202,64 @@ export default function Home() {
       </header>
 
       {/* =====================================================
-          HERO
+          CENTERED HERO
       ===================================================== */}
       <section
         id="home"
-        className="mx-auto grid max-w-7xl gap-8 border-b border-[#E7E7E3] bg-white px-6 py-14 md:grid-cols-[1.05fr_0.95fr] md:py-20"
+        className="border-b border-[#E7E7E3] bg-white px-6 py-20 md:py-28"
       >
-        <div className="flex flex-col justify-center">
-          <p className="mb-6 text-xs tracking-[0.38em] text-[#696969]">
-            DATA · DESIGN · HUMAN STORIES
-          </p>
+        <div className="mx-auto max-w-7xl text-center">
+          <h2 className="text-4xl font-normal leading-none tracking-[-0.045em] md:text-6xl lg:text-7xl">
+            <span className="text-[#1A1A1A]">
+              Data Stories,{" "}
+            </span>
 
-          <h2 className="max-w-2xl text-5xl font-normal leading-[0.98] tracking-[-0.04em] md:text-7xl">
-            Data Stories,
-            <br />
-            <span className="text-[#5A4638]">Beautifully</span> Told.
+            <span className="text-[#5A4638]">
+              Beautifully Told.
+            </span>
           </h2>
 
-          <p className="mt-7 max-w-xl text-xl leading-relaxed text-[#60606B]">
+          <p className="mx-auto mt-8 max-w-4xl text-lg leading-8 text-[#60606B] md:text-xl">
             Turning data into meaningful stories through beautiful dashboards
             and thoughtful visuals.
           </p>
-
-          <div className="my-7 h-px w-12 bg-[#5A4638]" />
-
-          <p className="max-w-lg text-base leading-7 text-[#66666F]">
-            I create data visualizations that inform, inspire and make complex
-            information feel human.
-          </p>
-
-          <div className="mt-9">
-            <a
-              href="#dashboards"
-              className="inline-flex items-center gap-8 bg-[#5A4638] px-7 py-4 text-xs font-semibold tracking-[0.18em] text-white transition hover:bg-[#47372C]"
-            >
-              EXPLORE WORK
-              <span className="text-lg font-light">→</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="relative min-h-[430px] overflow-hidden bg-white">
-          <div className="absolute inset-0 flex items-center justify-center border border-[#E7E7E3]">
-            <div className="text-center">
-              <p className="text-xs tracking-[0.28em] text-[#8F8F8F]">
-                HERO IMAGE
-              </p>
-
-              <p className="mt-3 text-sm text-[#9A9A9A]">
-                Final editorial artwork
-              </p>
-            </div>
-          </div>
-
-          <div className="absolute right-5 top-8 text-[10px] leading-6 tracking-[0.32em] text-[#6F6F6F]">
-            INSIGHTS
-            <br />
-            CREATE
-            <br />
-            A BRIGHTER
-            <br />
-            TOMORROW
-          </div>
         </div>
       </section>
 
       {/* =====================================================
-          DASHBOARDS
+          FULL DASHBOARDS
       ===================================================== */}
-      <section id="dashboards" className="bg-white px-6 py-16">
+      <section
+        id="dashboards"
+        className="bg-[#FCFBF9] px-6 py-16"
+      >
         <div className="mx-auto max-w-7xl">
+          {/* SECTION HEADER */}
           <div className="mb-10 flex items-end justify-between">
             <div>
-              <p className="text-xs tracking-[0.35em] text-[#6F6F6F]">
+              <p className="text-xs tracking-[0.35em] text-[#77777D]">
                 FEATURED WORK
               </p>
 
-              <h2 className="mt-2 text-4xl font-normal tracking-[-0.03em] text-[#5A4638] md:text-5xl">
-                Latest Projects
+              <h2 className="mt-3 text-4xl font-normal tracking-[-0.03em] text-[#1A1A1A] md:text-5xl">
+                Explore Dashboards
               </h2>
             </div>
 
             <a
               href="#all-projects"
-              className="hidden border-b border-[#5A4638] pb-1 text-xs font-semibold tracking-[0.12em] md:block"
+              className="hidden items-center gap-3 text-xs font-semibold tracking-[0.12em] text-[#5A4638] md:flex"
             >
-              VIEW ALL PROJECTS →
+              VIEW ALL
+              <span className="text-lg">→</span>
             </a>
           </div>
 
           {/* =================================================
-              FEATURED EXC DASHBOARD
+              LATEST / FEATURED EXC DASHBOARD
           ================================================= */}
-          <article className="mb-10 overflow-hidden border border-[#DDDCD7] bg-white">
-            <div className="flex flex-col gap-5 border-b border-[#E7E7E3] bg-white px-6 py-6 md:flex-row md:items-center md:justify-between">
+          <article className="mb-10 overflow-hidden border border-[#E3E0DA] bg-white">
+            <div className="flex flex-col gap-5 border-b border-[#E7E7E3] px-6 py-6 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
                   LATEST DASHBOARD
@@ -328,8 +287,7 @@ export default function Home() {
               </a>
             </div>
 
-            {/* FULL LIVE EXC REPORT */}
-            <div className="relative h-[72vh] min-h-[620px] w-full overflow-hidden bg-white md:h-[85vh] md:min-h-[720px]">
+            <div className="relative h-[72vh] min-h-[620px] w-full overflow-hidden bg-white md:h-[82vh] md:min-h-[700px]">
               <iframe
                 src={EXC_DASHBOARD}
                 title="EXC Dashboard"
@@ -338,7 +296,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="flex flex-col gap-5 border-t border-[#E7E7E3] bg-white px-6 py-6 md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col gap-5 border-t border-[#E7E7E3] px-6 py-6 md:flex-row md:items-center md:justify-between">
               <p className="max-w-2xl text-sm leading-7 text-[#707078]">
                 A focused executive reporting experience combining performance
                 indicators, business trends and operational insights in one
@@ -365,7 +323,7 @@ export default function Home() {
           </article>
 
           {/* =================================================
-              OTHER DASHBOARDS
+              DASHBOARD GRID
           ================================================= */}
           <div
             id="all-projects"
@@ -374,9 +332,8 @@ export default function Home() {
             {dashboardCards.map((project) => (
               <article
                 key={project.id}
-                className="group overflow-hidden border border-[#E0E0DC] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="group overflow-hidden rounded-sm border border-[#E4E2DD] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                {/* LIVE REPORT PREVIEW */}
                 <div className="relative aspect-[16/9] overflow-hidden bg-white">
                   <iframe
                     src={project.url}
@@ -461,7 +418,7 @@ export default function Home() {
           </p>
 
           <article className="mt-10 overflow-hidden border border-[#DDDCD7] bg-white">
-            <div className="border-b border-[#E7E7E3] bg-white px-6 py-6">
+            <div className="border-b border-[#E7E7E3] px-6 py-6">
               <p className="text-[10px] font-semibold tracking-[0.28em] text-[#5A4638]">
                 CUSTOM VISUAL FEATURE
               </p>
@@ -566,7 +523,7 @@ export default function Home() {
       >
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-xs tracking-[0.35em] text-[#6F6F6F]">
-            ABOUT THE VISUAL METRIC
+            ABOUT
           </p>
 
           <h2 className="mt-4 text-4xl font-normal text-[#5A4638] md:text-5xl">
@@ -574,8 +531,8 @@ export default function Home() {
           </h2>
 
           <p className="mx-auto mt-6 max-w-2xl leading-7 text-[#6F6F6F]">
-            The Visual Metric is a space for thoughtful dashboard design,
-            visual storytelling and practical Power BI learning.
+            I create data visualizations that inform, inspire and make complex
+            information feel human.
           </p>
         </div>
       </section>
