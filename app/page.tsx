@@ -79,11 +79,34 @@ const VISUAL_INSIGHTS_DASHBOARD =
 const NEW_DASHBOARD =
   "https://app.fabric.microsoft.com/view?r=eyJrIjoiN2JkMjNmMmMtMDFhNC00Yzc2LTliOGItMWZjOGFhOTNiMzdkIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
+const LATEST_DASHBOARD =
+  "https://app.powerbi.com/view?r=eyJrIjoiZDAyZDZmNTgtYjBmOS00MWFlLTk1YjUtNDI4ZGFjNjI1N2NmIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
+
 /* =========================================================
    DASHBOARD CARDS
 ========================================================= */
 
 const dashboardCards = [
+  {
+    id: "latest-dashboard",
+    title: "Operational Insights Dashboard",
+    description:
+      "An interactive Power BI report bringing together key operational metrics, trends and drivers in one clear view.",
+    type: "Full Dashboard",
+    category: "Operational Analytics",
+    date: "Oct 2026",
+    url: LATEST_DASHBOARD,
+  },
+  {
+    id: "exc",
+    title: "EXC Dashboard",
+    description:
+      "An executive-focused Power BI dashboard providing a clear view of key performance metrics, trends and operational insights.",
+    type: "Full Dashboard",
+    category: "Executive Reporting",
+    date: "Sep 2026",
+    url: EXC_DASHBOARD,
+  },
   {
     id: "performance",
     title: "Performance Overview",
@@ -256,7 +279,7 @@ export default function Home() {
           </div>
 
           {/* =================================================
-              LATEST / FEATURED EXC DASHBOARD
+              LATEST / FEATURED DASHBOARD
           ================================================= */}
           <article className="mb-8 overflow-hidden border border-[#E3E0DA] bg-white">
             <div className="flex flex-col gap-4 border-b border-[#E7E7E3] px-6 py-5 md:flex-row md:items-center md:justify-between">
@@ -266,18 +289,17 @@ export default function Home() {
                 </p>
 
                 <h3 className="mt-2 text-2xl font-medium tracking-[-0.02em] md:text-3xl">
-                  EXC Dashboard
+                  Operational Insights Dashboard
                 </h3>
 
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-[#707078]">
-                  An executive-focused Power BI dashboard designed to provide a
-                  clear view of key performance metrics, trends and operational
-                  insights.
+                  An interactive Power BI report bringing together key
+                  operational metrics, trends and drivers in one clear view.
                 </p>
               </div>
 
               <a
-                href={EXC_DASHBOARD}
+                href={LATEST_DASHBOARD}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex w-fit items-center gap-3 bg-[#5A4638] px-6 py-4 text-xs font-semibold tracking-[0.14em] text-white transition hover:bg-[#47372C]"
@@ -289,8 +311,8 @@ export default function Home() {
 
             <div className="relative h-[68vh] min-h-[560px] w-full overflow-hidden bg-white md:h-[76vh] md:min-h-[640px]">
               <iframe
-                src={EXC_DASHBOARD}
-                title="EXC Dashboard"
+                src={LATEST_DASHBOARD}
+                title="Operational Insights Dashboard"
                 className="absolute inset-0 h-full w-full border-0 bg-white"
                 allowFullScreen
               />
@@ -298,7 +320,7 @@ export default function Home() {
 
             <div className="flex flex-col gap-4 border-t border-[#E7E7E3] px-6 py-5 md:flex-row md:items-center md:justify-between">
               <p className="max-w-2xl text-sm leading-7 text-[#707078]">
-                A focused executive reporting experience combining performance
+                A focused reporting experience combining performance
                 indicators, business trends and operational insights in one
                 interactive view.
               </p>
@@ -311,12 +333,12 @@ export default function Home() {
 
                 <div className="flex items-center gap-2">
                   <TagIcon />
-                  <span>Executive Reporting</span>
+                  <span>Operational Analytics</span>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <CalendarIcon />
-                  <span>Sep 2026</span>
+                  <span>Oct 2026</span>
                 </div>
               </div>
             </div>
