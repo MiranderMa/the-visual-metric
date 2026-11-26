@@ -64,6 +64,9 @@ const YouTubeIcon = () => (
    DASHBOARD LINKS
 ========================================================= */
 
+// Estately lives inside this website: the files sit in public/estately/
+const ESTATELY_DASHBOARD = "/estately/index.html";
+
 const PERFORMANCE_DASHBOARD =
   "https://app.powerbi.com/view?r=eyJrIjoiMWIwNGJkOWQtYzZmMy00OTljLTg0OTQtNTM4NzAzOTQ0N2NjIiwidCI6ImM1ZjU2YjY5LTFkZWMtNGNiNS05YzAxLWY4NzUyZWUxN2RkNyJ9";
 
@@ -87,6 +90,18 @@ const LATEST_DASHBOARD =
 ========================================================= */
 
 const dashboardCards = [
+  {
+    id: "estately",
+    title: "Estately Property Dashboard",
+    description:
+      "A custom-built interactive dashboard tracking a year of property sales: prices, pipeline, buyer mix and top agents.",
+    type: "Full Dashboard",
+    category: "Real Estate Analytics",
+    date: "Nov 2026",
+    url: ESTATELY_DASHBOARD,
+    // Shown as a shrunken desktop view in the card preview
+    scaledPreview: true,
+  },
   {
     id: "latest-dashboard",
     title: "Operational Insights Dashboard",
@@ -289,17 +304,17 @@ export default function Home() {
                 </p>
 
                 <h3 className="mt-2 text-2xl font-medium tracking-[-0.02em] md:text-3xl">
-                  Operational Insights Dashboard
+                  Estately Property Dashboard
                 </h3>
 
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-[#707078]">
-                  An interactive Power BI report bringing together key
-                  operational metrics, trends and drivers in one clear view.
+                  A custom-built interactive dashboard tracking a year of
+                  property sales: prices, pipeline, buyer mix and top agents.
                 </p>
               </div>
 
               <a
-                href={LATEST_DASHBOARD}
+                href={ESTATELY_DASHBOARD}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex w-fit items-center gap-3 bg-[#5A4638] px-6 py-4 text-xs font-semibold tracking-[0.14em] text-white transition hover:bg-[#47372C]"
@@ -311,8 +326,8 @@ export default function Home() {
 
             <div className="relative h-[68vh] min-h-[560px] w-full overflow-hidden bg-white md:h-[76vh] md:min-h-[640px]">
               <iframe
-                src={LATEST_DASHBOARD}
-                title="Operational Insights Dashboard"
+                src={ESTATELY_DASHBOARD}
+                title="Estately Property Dashboard"
                 className="absolute inset-0 h-full w-full border-0 bg-white"
                 allowFullScreen
               />
@@ -320,9 +335,9 @@ export default function Home() {
 
             <div className="flex flex-col gap-4 border-t border-[#E7E7E3] px-6 py-5 md:flex-row md:items-center md:justify-between">
               <p className="max-w-2xl text-sm leading-7 text-[#707078]">
-                A focused reporting experience combining performance
-                indicators, business trends and operational insights in one
-                interactive view.
+                Filter by property type, period, region, bedrooms, buyer type
+                and agency, or click a month, buyer group or agent to drill
+                in. Built with HTML and Apache ECharts.
               </p>
 
               <div className="flex flex-wrap gap-x-6 gap-y-3 text-xs text-[#6B6B73]">
@@ -333,12 +348,12 @@ export default function Home() {
 
                 <div className="flex items-center gap-2">
                   <TagIcon />
-                  <span>Operational Analytics</span>
+                  <span>Real Estate Analytics</span>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <CalendarIcon />
-                  <span>Oct 2026</span>
+                  <span>Nov 2026</span>
                 </div>
               </div>
             </div>
@@ -357,12 +372,24 @@ export default function Home() {
                 className="group overflow-hidden border border-[#E4E2DD] bg-white p-3 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="relative aspect-[16/9] overflow-hidden bg-white">
-                  <iframe
-                    src={project.url}
-                    title={project.title}
-                    className="pointer-events-none absolute inset-0 h-full w-full border-0 bg-white"
-                    tabIndex={-1}
-                  />
+                  {project.scaledPreview ? (
+                    // Render at desktop size, then shrink, so the preview
+                    // shows the full dashboard layout instead of the phone one.
+                    <iframe
+                      src={project.url}
+                      title={project.title}
+                      loading="lazy"
+                      className="pointer-events-none absolute left-0 top-0 h-[810px] w-[1440px] origin-top-left scale-[0.26] border-0 bg-white"
+                      tabIndex={-1}
+                    />
+                  ) : (
+                    <iframe
+                      src={project.url}
+                      title={project.title}
+                      className="pointer-events-none absolute inset-0 h-full w-full border-0 bg-white"
+                      tabIndex={-1}
+                    />
+                  )}
 
                   <a
                     href={project.url}
