@@ -1,0 +1,7 @@
+region_id,region_name,city,country,latitude,longitude,median_income
+1,Waterfront,Bayport,Sample Country,25.081,55.14,184000
+2,Downtown,Bayport,Sample Country,25.197,55.274,156000
+3,Old Town,Bayport,Sample Country,25.264,55.297,118000
+4,Hillside,Bayport,Sample Country,25.142,55.41,104000
+5,North Suburbs,Bayport,Sample Country,25.33,55.38,92000
+6,East Valley,Bayport,Sample Country,25.215,55.52,78000

@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estately Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+  :root {
+    --primary: #3D0FB0;
+    --lavender: #C9BDF0;
+    --bg: #F6F5FA;
+    --pale: #EEEAF9;
+    --pale-2: #E5DEF8;
+    --ink: #17132B;
+    --ink-2: #2B2640;
+    --muted: #6E6A80;
+    --line: #ECEAF2;
+    --card: #FFFFFF;
+    --orange: #E8875B;
+    --good: #1F7A47;
+    --bad: #B4232F;
+    --radius: 20px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    color: var(--ink);
+    background: linear-gradient(160deg, #EFEBF8 0%, #E9E4F6 100%);
+    min-height: 100vh;
+    padding: 24px 40px;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, select, input { font-family: inherit; color: inherit; }
+  .app {
+    max-width: 1360px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    background: var(--bg);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(61, 15, 176, 0.06);
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    background: #fff;
+    padding: 26px 16px 28px;
+    display: flex;
+    flex-direction: column;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 10px; margin-bottom: 30px;
+    color: var(--primary);
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 700; font-size: 24px; letter-spacing: -0.2px;
+  }
+  .logo svg { width: 22px; height: 22px; }
+  .nav { display: flex; flex-direction: column; gap: 6px; }
+  .nav a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 13px; border-radius: 12px;
+    color: var(--ink-2); text-decoration: none; font-size: 14.5px; font-weight: 500;
+  }
+  .nav a svg { width: 17px; height: 17px; color: #4B4660; }
+  .nav a.active { background: var(--pale); font-weight: 600; color: var(--ink); }
+  .nav a.active svg { color: var(--primary); }
+  .nav a:not(.active):hover { background: #F7F5FC; }
+  .refresh-card {
+    margin-top: auto;
+    background: var(--pale);
+    border-radius: 18px;
+    padding: 20px 16px 18px;
+  }
+  .refresh-card svg { width: 88px; height: 50px; display: block; margin-bottom: 12px; }
+  .refresh-card h4 { margin: 0 0 6px; font-size: 13.5px; font-weight: 600; }
+  .refresh-card p { margin: 0; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .logout {
+    display: flex; align-items: center; gap: 12px;
+    margin-top: 30px; padding: 0 12px;
+    color: var(--primary); text-decoration: none; font-size: 14.5px; font-weight: 500;
+  }
+  .logout svg { width: 16px; height: 16px; }
+
+  /* ---------- Main ---------- */
+  .main { padding: 24px 24px 24px; min-width: 0; }
+  .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+  .topbar h1 { margin: 2px 0 4px; font-size: 23px; font-weight: 700; letter-spacing: -0.3px; }
+  .topbar p { margin: 0; color: var(--muted); font-size: 13.5px; }
+  .top-actions { display: flex; align-items: center; gap: 12px; }
+  .search {
+    display: flex; align-items: center; gap: 10px;
+    width: 238px; height: 46px; padding: 0 14px;
+    background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  }
+  .search svg { width: 14px; height: 14px; color: var(--ink-2); flex: none; }
+  .search input { border: 0; outline: 0; background: transparent; font-size: 13.5px; width: 100%; }
+  .search input::placeholder { color: var(--muted); }
+  .icon-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #fff; border: 1px solid var(--line);
+    display: grid; place-items: center; cursor: pointer;
+  }
+  .icon-btn svg { width: 16px; height: 16px; color: var(--primary); }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: grid; place-items: center; font-weight: 600; font-size: 14px;
+  }
+
+  /* ---------- Filters ---------- */
+  .filters {
+    background: #fff; border-radius: var(--radius);
+    padding: 14px 16px 15px;
+    display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .f-group { display: flex; flex-direction: column; gap: 8px; }
+  .f-group > span { font-size: 12px; font-weight: 500; color: var(--ink-2); padding-left: 1px; }
+  .segmented {
+    display: flex; align-items: center; gap: 2px;
+    height: 43px; padding: 4px; border-radius: 12px; background: var(--bg);
+  }
+  .segmented button {
+    border: 0; background: transparent; cursor: pointer;
+    height: 35px; padding: 0 9px; border-radius: 9px;
+    font-size: 13px; font-weight: 500; color: var(--ink-2);
+  }
+  .segmented button.active { background: var(--primary); color: #fff; }
+  .select-wrap { position: relative; display: flex; align-items: center; }
+  .select-wrap > svg {
+    position: absolute; left: 13px; width: 13px; height: 13px; color: var(--primary); pointer-events: none;
+  }
+  .select-wrap select {
+    appearance: none; -webkit-appearance: none;
+    height: 43px; padding: 0 28px 0 31px;
+    border: 1px solid #E2DFEA; border-radius: 12px; background-color: #fff;
+    font-size: 13px; font-weight: 500; color: var(--ink); cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317132B' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 11px center; background-size: 11px;
+  }
+  .select-wrap select:focus-visible, .segmented button:focus-visible, .reset:focus-visible { outline: 2px solid var(--lavender); outline-offset: 2px; }
+  @media (min-width: 1281px) {
+    .filters { flex-wrap: nowrap; }
+    .filters .f-group { flex: none; min-width: 0; }
+    .filters .f-group:nth-child(2) { width: 196px; }
+    .filters .f-group:nth-child(3) { width: 128px; }
+    .filters .f-group:nth-child(4) { width: 94px; }
+    .filters .f-group:nth-child(5) { width: 130px; }
+    .filters .f-group:nth-child(6) { width: 138px; }
+    .select-wrap select { width: 100%; min-width: 0; text-overflow: ellipsis; }
+  }
+  .reset {
+    width: 44px; height: 43px; border: 0; border-radius: 12px;
+    background: var(--pale); display: grid; place-items: center; cursor: pointer; margin-left: auto;
+  }
+  .reset svg { width: 15px; height: 15px; color: var(--primary); }
+
+  /* ---------- Cards ---------- */
+  .card { background: var(--card); border-radius: var(--radius); padding: 18px 20px; min-width: 0; }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .card-title { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.1px; }
+  .card-meta { font-size: 12.5px; font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+  .card-sub { margin: 4px 0 0; font-size: 12.5px; color: var(--muted); }
+
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 18px; }
+  .kpi { padding: 18px 20px 20px; }
+  .kpi-head { display: flex; align-items: center; gap: 10px; }
+  .kpi-icon {
+    width: 31px; height: 31px; border-radius: 9px; background: var(--pale);
+    display: grid; place-items: center; color: var(--primary); flex: none;
+  }
+  .kpi-icon svg { width: 14px; height: 14px; }
+  .kpi-head h3 { margin: 0; font-size: 15.5px; font-weight: 600; flex: 1; }
+  .kpi-dots { color: #9C98AB; letter-spacing: 2px; font-size: 13px; line-height: 1; }
+  .kpi .card-sub { margin: 4px 0 0 41px; }
+  .kpi-value { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
+  .kpi-value strong { font-size: 28px; font-weight: 600; letter-spacing: -0.6px; line-height: 1; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 2px;
+    padding: 3px 7px; border-radius: 7px; border: 1px solid #E3E1EA;
+    font-size: 11.5px; font-weight: 600; color: var(--good); white-space: nowrap;
+  }
+  .badge.bad { color: var(--bad); }
+  .badge.flat { color: var(--muted); }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 16px; margin-bottom: 18px; }
+  .stack { display: grid; grid-template-rows: auto 1fr; gap: 16px; min-width: 0; }
+  #chart-price { height: 132px; margin: 8px -6px 0 -6px; }
+  #chart-sold { height: 410px; margin: 10px -4px -4px -8px; }
+
+  .target .bar { height: 10px; border-radius: 10px; background: var(--lavender); margin: 18px 0 9px; overflow: hidden; }
+  .target .bar i { display: block; height: 100%; background: var(--primary); border-radius: 10px; transition: width .4s; }
+  .target .bar-legend { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); }
+  .target .bar-legend b { color: var(--ink); font-weight: 600; }
+  .stat-list { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
+  .stat-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg); border-radius: 10px; padding: 9px 12px;
+    font-size: 13px; color: var(--ink-2);
+  }
+  .stat-row b { font-weight: 600; color: var(--ink); }
+
+  .buyer { display: flex; flex-direction: column; }
+  .donut-wrap { position: relative; height: 180px; margin: 14px 0 18px; }
+  #chart-buyers { position: absolute; inset: 0; }
+  .donut-center { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; pointer-events: none; }
+  .donut-center strong { font-size: 25px; font-weight: 700; letter-spacing: -0.5px; }
+  .donut-center span { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .mix-head, .mix-row { display: grid; grid-template-columns: 1fr auto 58px; align-items: center; }
+  .mix-head { font-size: 11.5px; color: var(--muted); padding: 0 1px 6px; border-bottom: 1px solid var(--line); }
+  .mix-head span:last-child { grid-column: 2 / 4; text-align: right; }
+  .mix-row { padding: 10px 1px; border-bottom: 1px solid var(--line); font-size: 13px; }
+  .mix-row:last-child { border-bottom: 0; }
+  .mix-row[data-type], .agent[data-agency] { cursor: pointer; transition: background .15s, box-shadow .15s; }
+  .mix-row[data-type] { margin: 0 -6px; padding-left: 7px; padding-right: 7px; border-radius: 8px; }
+  .mix-row[data-type]:hover, .mix-row.selected { background: var(--bg); }
+  .mix-row.selected .name { font-weight: 600; }
+  .agent[data-agency]:hover { box-shadow: 0 4px 14px rgba(61, 15, 176, .10); }
+  .agent.selected { box-shadow: inset 0 0 0 2px var(--primary); }
+  .mix-row:focus-visible, .agent:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .hint { font-size: 11.5px; color: var(--muted); margin: 6px 0 0; }
+  .mix-row .name { display: flex; align-items: center; gap: 10px; }
+  .mix-row .sw { width: 10px; height: 10px; border-radius: 3px; }
+  .mix-row .pct { font-weight: 600; text-align: right; }
+  .mix-row .med { color: var(--muted); text-align: right; }
+  .insight {
+    margin-top: auto; background: var(--bg); border-radius: 12px;
+    padding: 11px 12px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2);
+  }
+  .insight b { color: var(--primary); font-weight: 700; }
+
+  .row3 { display: grid; grid-template-columns: 2.13fr 1fr; gap: 16px; }
+  .pipeline { padding: 20px 21px 21px; }
+  .link { color: var(--primary); font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+  .pipe-bar { display: flex; gap: 3px; height: 13px; margin: 24px 0 18px; }
+  .pipe-bar i { display: block; height: 100%; border-radius: 3px; min-width: 0; transition: flex-grow .4s; }
+  .pipe-bar i:first-child { border-radius: 6px 3px 3px 6px; }
+  .pipe-bar i:last-child { border-radius: 3px 6px 6px 3px; }
+  .pipe-stats { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .pipe-stat { padding: 0 18px; border-left: 1px solid var(--line); }
+  .pipe-stat:first-child { border-left: 0; padding-left: 18px; }
+  .pipe-stat .label { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 500; }
+  .pipe-stat .label i { width: 8px; height: 8px; border-radius: 50%; }
+  .pipe-stat .num { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 6px; }
+  .pipe-stat .num strong { font-size: 29px; font-weight: 600; letter-spacing: -0.6px; }
+  .pipe-stat .num span { font-size: 12.5px; font-weight: 600; color: var(--primary); }
+  .pipe-stat p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+  .pipe-foot { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 30px; }
+  .pipe-foot div { background: var(--bg); border-radius: 12px; padding: 12px 14px; }
+  .pipe-foot span { display: block; font-size: 12.5px; color: var(--muted); }
+  .pipe-foot strong { display: block; font-size: 19px; font-weight: 600; margin-top: 2px; }
+
+  .agents { background: var(--pale-2); padding: 20px 22px 20px; }
+  .agents .card-meta { color: var(--muted); font-weight: 500; }
+  .agent-list { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+  .agent {
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border-radius: 12px; padding: 10px 12px; min-height: 54px;
+  }
+  .agent .av {
+    width: 34px; height: 34px; border-radius: 50%; flex: none;
+    display: grid; place-items: center; font-size: 12.5px; font-weight: 700;
+    background: var(--pale); color: var(--primary);
+  }
+  .agent:nth-child(1) .av { background: var(--primary); color: #fff; }
+  .agent:nth-child(2) .av { background: var(--lavender); }
+  .agent .who { flex: 1; min-width: 0; }
+  .agent .who b { display: block; font-size: 13.5px; font-weight: 600; }
+  .agent .who span { display: block; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .agent .val { font-size: 13.5px; font-weight: 700; }
+  .empty { font-size: 13px; color: var(--muted); padding: 10px 2px; }
+
+  .loading { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(246,245,250,.85); font-weight: 600; color: var(--primary); z-index: 10; transition: opacity .3s; }
+  .loading.hidden { opacity: 0; pointer-events: none; }
+
+  @media (max-width: 1280px) {
+    body { padding: 16px; }
+    .row2 { grid-template-columns: 1fr 1fr; }
+    .row2 .buyer { grid-column: 1 / -1; }
+  }
+  @media (max-width: 1020px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .row3 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 680px) {
+    body { padding: 0; }
+    .app { border-radius: 0; }
+    .main { padding: 16px; }
+    .topbar { flex-direction: column; }
+    .search { flex: 1; width: auto; }
+    .top-actions { width: 100%; }
+    .kpis, .row2 { grid-template-columns: 1fr; }
+    .f-group { flex: 1 1 140px; }
+    .f-group:first-child, .f-group:nth-child(2) { flex-basis: 100%; }
+    .segmented { overflow-x: auto; }
+    .select-wrap select { width: 100%; min-width: 0 !important; }
+    .reset { margin-left: 0; }
+    .pipe-stats { grid-template-columns: 1fr 1fr; row-gap: 18px; }
+    .pipe-stat:nth-child(3) { border-left: 0; }
+    .pipe-stat { padding: 0 12px; }
+    .pipe-stat:first-child, .pipe-stat:nth-child(3) { padding-left: 4px; }
+    .pipe-foot { grid-template-columns: 1fr; }
+    #chart-sold { height: 300px; }
+  }
+</style>
+</head>
+<body>
+<div class="loading" id="loading">Loading sales data…</div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Estately
+    </div>
+    <nav class="nav">
+      <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Dashboard</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg>Listings</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Regions</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Agents</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16 6-6 4 4 8-8"/></svg>Analytics</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M9 12h6M9 16h6"/></svg>Reports</a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>Settings</a>
+    </nav>
+    <div class="refresh-card">
+      <svg viewBox="0 0 88 50" fill="none">
+        <path d="M2 48h84" stroke="#C9BDF0" stroke-width="2" stroke-linecap="round"/>
+        <path d="M8 26 21 14l13 12v22H8z" fill="#fff" stroke="#3D0FB0" stroke-width="2.4" stroke-linejoin="round"/>
+        <rect x="17" y="36" width="8" height="12" fill="#C9BDF0"/>
+        <path d="M38 22 52 8l14 14v26H38z" fill="#3D0FB0" stroke="#3D0FB0" stroke-width="2" stroke-linejoin="round"/>
+        <rect x="44" y="24" width="5" height="5" fill="#fff"/><rect x="55" y="24" width="5" height="5" fill="#fff"/>
+        <rect x="48" y="36" width="8" height="12" fill="#fff"/>
+      </svg>
+      <h4>Data refreshed today</h4>
+      <p id="refresh-note">—</p>
+    </div>
+    <a href="#" class="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-5"/><path d="M10 8l-4 4 4 4M6 12h10"/></svg>Log out</a>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Welcome back, Mirander</h1>
+        <p>Here's how the property market is moving · sample data</p>
+      </div>
+      <div class="top-actions">
+        <label class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="search" type="search" placeholder="Search region or listing" aria-label="Search region or listing" list="search-options">
+          <datalist id="search-options"></datalist>
+        </label>
+        <button class="icon-btn" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 21h4"/></svg></button>
+        <div class="avatar">M</div>
+      </div>
+    </header>
+
+    <section class="filters" aria-label="Filters">
+      <div class="f-group">
+        <span>Property type</span>
+        <div class="segmented" id="f-type" role="group" aria-label="Property type">
+          <button data-v="all" class="active">All</button>
+          <button data-v="Apartment">Apartments</button>
+          <button data-v="Villa">Villas</button>
+          <button data-v="Townhouse">Townhouses</button>
+        </div>
+      </div>
+      <label class="f-group">
+        <span>Period</span>
+        <div class="select-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <select id="f-period"></select>
+        </div>
+      </label>
+      <label class="f-group">
+        <span>Region</span>
+        <div class="select-wrap">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 7.8L22 12l-7.8 2.2L12 22l-2.2-7.8L2 12l7.8-2.2z"/></svg>
+          <select id="f-region"><option value="all">All regions</option></select>
+        </div>
+      </label>
+      <label class="f-group">
+        <span>Bedrooms</span>
+        <div class="select-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><rect x="3" y="8" width="18" height="9" rx="1.5"/></svg>
+          <select id="f-beds">
+            <option value="any">Any</option>
+            <option value="0">Studio</option>
+            <option value="1">1 bed</option>
+            <option value="2">2 beds</option>
+            <option value="3">3 beds</option>
+            <option value="4">4 beds</option>
+            <option value="5">5+ beds</option>
+          </select>
+        </div>
+      </label>
+      <label class="f-group">
+        <span>Buyer type</span>
+        <div class="select-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></svg>
+          <select id="f-buyer"><option value="all">All buyers</option></select>
+        </div>
+      </label>
+      <label class="f-group">
+        <span>Agency</span>
+        <div class="select-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><path d="M12 3 21 12 12 21 3 12z"/></svg>
+          <select id="f-agency"><option value="all">All agencies</option></select>
+        </div>
+      </label>
+      <button class="reset" id="reset" aria-label="Reset filters" title="Reset filters"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/></svg></button>
+    </section>
+
+    <section class="kpis">
+      <article class="card kpi">
+        <div class="kpi-head"><div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Median sale price</h3><span class="kpi-dots">···</span></div>
+        <p class="card-sub" id="k-price-sub">—</p>
+        <div class="kpi-value"><strong id="k-price">—</strong><span class="badge" id="k-price-d"></span></div>
+      </article>
+      <article class="card kpi">
+        <div class="kpi-head"><div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="4" y="4" width="16" height="16" rx="1.5"/><path d="M4 13h9V4"/></svg></div><h3>Price per sq ft</h3><span class="kpi-dots">···</span></div>
+        <p class="card-sub" id="k-ppsf-sub">—</p>
+        <div class="kpi-value"><strong id="k-ppsf">—</strong><span class="badge" id="k-ppsf-d"></span></div>
+      </article>
+      <article class="card kpi">
+        <div class="kpi-head"><div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg></div><h3>Homes sold</h3><span class="kpi-dots">···</span></div>
+        <p class="card-sub" id="k-sold-sub">—</p>
+        <div class="kpi-value"><strong id="k-sold">—</strong><span class="badge" id="k-sold-d"></span></div>
+      </article>
+      <article class="card kpi">
+        <div class="kpi-head"><div class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5h4"/></svg></div><h3>Days on market</h3><span class="kpi-dots">···</span></div>
+        <p class="card-sub" id="k-dom-sub">—</p>
+        <div class="kpi-value"><strong id="k-dom">—</strong><span class="badge" id="k-dom-d"></span></div>
+      </article>
+    </section>
+
+    <section class="row2">
+      <div class="stack">
+        <article class="card">
+          <div class="card-head"><h2 class="card-title">Median sale price</h2><span class="card-meta" id="price-range">—</span></div>
+          <div id="chart-price"></div>
+        </article>
+        <article class="card target">
+          <h2 class="card-title">Annual sales target</h2>
+          <p class="card-sub" id="t-sub">Homes sold against the 15,000 goal</p>
+          <div class="bar"><i id="t-fill" style="width:0"></i></div>
+          <div class="bar-legend"><span id="t-progress">—</span><b id="t-goal">—</b></div>
+          <div class="stat-list">
+            <div class="stat-row"><span>Still needed</span><b id="t-needed">—</b></div>
+            <div class="stat-row"><span>Average per month</span><b id="t-avg">—</b></div>
+            <div class="stat-row"><span>Best month</span><b id="t-best">—</b></div>
+          </div>
+        </article>
+      </div>
+      <article class="card">
+        <div class="card-head"><h2 class="card-title">Homes sold per month</h2><span class="card-meta" id="sold-range">—</span></div>
+        <div id="chart-sold"></div>
+      </article>
+      <article class="card buyer">
+        <h2 class="card-title">Buyer mix</h2>
+        <div class="donut-wrap">
+          <div id="chart-buyers"></div>
+          <div class="donut-center"><strong id="b-total">—</strong><span>buyers</span></div>
+        </div>
+        <div class="mix-head"><span>Buyer type</span><span>Share · median price</span></div>
+        <div id="mix-rows"></div>
+        <div class="insight" id="insight">—</div>
+      </article>
+    </section>
+
+    <section class="row3">
+      <article class="card pipeline">
+        <div class="card-head"><h2 class="card-title">Listing pipeline</h2><a class="link" href="#">View listings →</a></div>
+        <p class="card-sub" id="p-sub">—</p>
+        <div class="pipe-bar" id="p-bar"></div>
+        <div class="pipe-stats" id="p-stats"></div>
+        <div class="pipe-foot">
+          <div><span>Sale-to-list price</span><strong id="p-stl">—</strong></div>
+          <div><span id="p-dts-l">Avg days to sell</span><strong id="p-dts">—</strong></div>
+          <div><span id="p-str-l">Sell-through rate</span><strong id="p-str">—</strong></div>
+        </div>
+      </article>
+      <article class="card agents">
+        <div class="card-head"><h2 class="card-title">Top agents</h2><span class="card-meta">By sales value</span></div>
+        <div class="agent-list" id="agents"></div>
+      </article>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  const C = { primary: '#3D0FB0', lav: '#C9BDF0', pale: '#ECE8F8', bar: '#DDD4F6', ink: '#17132B', muted: '#6E6A80', line: '#EEECF3', orange: '#E8875B' };
+  const SALES_GOAL = 15000;            // annual goal (pro-rated for shorter periods)
+  const BUYER_COLORS = { 'Upgrader': C.lav, 'First-time buyer': C.primary, 'Investor': C.pale };
+  const BUYER_LABEL = { 'Upgrader': 'Upgraders', 'First-time buyer': 'First-time buyers', 'Investor': 'Investors' };
+  const STATUSES = [
+    { key: 'Active', color: C.lav, desc: 'Listed and taking viewings' },
+    { key: 'Under offer', color: '#9479E3', desc: 'Offer accepted, awaiting contract' },
+    { key: 'Sold', color: C.primary, desc: 'Closed this month' },
+    { key: 'Withdrawn', color: C.orange, desc: 'Taken off the market' },
+  ];
+  const MONTH_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  const $ = id => document.getElementById(id);
+  const fmtInt = n => Math.round(n).toLocaleString('en-US');
+  const fmtK = n => n >= 999500 ? '$' + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M' : '$' + Math.round(n / 1000).toLocaleString('en-US') + 'K';
+  const fmtMoney = n => n >= 1e6 ? '$' + Math.round(n / 1e6).toLocaleString('en-US') + 'M' : fmtK(n);
+  const fmtCompact = n => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K' : String(n);
+  const median = arr => {
+    if (!arr.length) return NaN;
+    const s = Float64Array.from(arr).sort(); const m = s.length >> 1;
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  };
+  const mean = arr => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : NaN;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const shortAgency = a => a.split(' ').slice(0, -1).join(' ') || a;
+  const initials = n => n.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+
+  const load = file => new Promise((resolve, reject) =>
+    Papa.parse('data/' + file, { download: true, header: true, skipEmptyLines: true, complete: r => resolve(r.data), error: reject }));
+
+  let ROWS = [], MONTHS = [], REGIONS = [];
+  const state = {};
+  const charts = {};
+
+  Promise.all(['fact_sales.csv', 'dim_date.csv', 'dim_property.csv', 'dim_region.csv', 'dim_agent.csv'].map(load))
+    .then(([fact, dates, props, regions, agents]) => {
+      // ---- dimensions ----
+      const monthIndex = new Map();
+      const dateMap = new Map();
+      dates.forEach(d => {
+        const key = `${d.year}-${String(d.month).padStart(2, '0')}`;
+        if (!monthIndex.has(key)) monthIndex.set(key, { key, year: +d.year, month: +d.month, short: d.month_name });
+        dateMap.set(d.date_key, key);
+      });
+      MONTHS = [...monthIndex.values()].sort((a, b) => a.key.localeCompare(b.key));
+      MONTHS.forEach((m, i) => { m.i = i; m.long = MONTH_LONG[m.month - 1]; });
+      const mIdx = new Map(MONTHS.map(m => [m.key, m.i]));
+      const propMap = new Map(props.map(p => [p.property_id, p]));
+      const regionMap = new Map(regions.map(r => [r.region_id, r]));
+      const agentMap = new Map(agents.map(a => [a.agent_id, a]));
+      REGIONS = regions;
+
+      // ---- join fact_sales to every dimension ----
+      ROWS = fact.map(f => {
+        const p = propMap.get(f.property_id) || {};
+        const r = regionMap.get(f.region_id) || {};
+        const a = agentMap.get(f.agent_id) || {};
+        const mk = dateMap.get(f.date_key);
+        return {
+          m: mIdx.has(mk) ? mIdx.get(mk) : -1,
+          type: p.type, beds: +p.bedrooms, sqft: +p.size_sqft,
+          region: f.region_id, regionName: r.region_name,
+          agentId: f.agent_id, agent: a.agent_name || 'Unknown agent', agency: a.agency || '',
+          list: +f.list_price || 0, sale: +f.sale_price || 0, dom: f.days_on_market === '' ? NaN : +f.days_on_market,
+          buyer: f.buyer_type || '', status: f.status,
+        };
+      }).filter(r => r.m >= 0);
+
+      buildFilters(agents);
+      initCharts();
+      render();
+      $('loading').classList.add('hidden');
+    })
+    .catch(err => { $('loading').textContent = 'Could not load data: ' + (err && err.message || err); });
+
+  // ---------- Filters ----------
+  function rangeLabel(s, e, withYear = true) {
+    const a = MONTHS[s], b = MONTHS[e];
+    if (!withYear) return s === e ? a.short : `${a.short}–${b.short}`;
+    if (s === e) return `${a.short} ${a.year}`;
+    return a.year === b.year ? `${a.short} – ${b.short} ${b.year}` : `${a.short} ${a.year} – ${b.short} ${b.year}`;
+  }
+
+  function buildFilters(agents) {
+    const last = MONTHS.length - 1;
+    const periods = [[0, last]];
+    if (MONTHS.length > 6) periods.push([last - 5, last], [0, 5]);
+    if (MONTHS.length > 3) periods.push([last - 2, last]);
+    for (let q = 0; q + 2 < last - 2; q += 3) periods.push([q, q + 2]);  // earlier quarters
+    $('f-period').innerHTML =
+      `<optgroup label="Ranges">${periods.map(([s, e]) => `<option value="${s}:${e}">${rangeLabel(s, e)}</option>`).join('')}</optgroup>` +
+      `<optgroup label="Single month">${MONTHS.map(m => `<option value="${m.i}:${m.i}">${m.long} ${m.year}</option>`).join('')}</optgroup>`;
+
+    $('f-region').innerHTML += REGIONS.map(r => `<option value="${esc(r.region_id)}">${esc(r.region_name)}</option>`).join('');
+    const buyers = [...new Set(ROWS.map(r => r.buyer).filter(Boolean))].sort();
+    $('f-buyer').innerHTML += buyers.map(b => `<option value="${esc(b)}">${esc(BUYER_LABEL[b] || b)}</option>`).join('');
+    const agencies = [...new Set(agents.map(a => a.agency))].sort();
+    $('f-agency').innerHTML += agencies.map(a => `<option value="${esc(a)}">${esc(a)}</option>`).join('');
+    $('search-options').innerHTML = REGIONS.map(r => `<option value="${esc(r.region_name)}">`).join('');
+
+    $('f-type').addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      [...$('f-type').children].forEach(x => x.classList.toggle('active', x === b));
+      render();
+    });
+    ['f-period', 'f-region', 'f-beds', 'f-buyer', 'f-agency'].forEach(id => $(id).addEventListener('change', render));
+    $('reset').addEventListener('click', () => {
+      [...$('f-type').children].forEach((x, i) => x.classList.toggle('active', i === 0));
+      ['f-period', 'f-region', 'f-beds', 'f-buyer', 'f-agency'].forEach(id => { $(id).selectedIndex = 0; });
+      $('search').value = '';
+      render();
+    });
+    $('search').addEventListener('change', e => {
+      const q = e.target.value.trim().toLowerCase(); if (!q) return;
+      const r = REGIONS.find(r => r.region_name.toLowerCase().includes(q));
+      if (r) { $('f-region').value = r.region_id; render(); }
+    });
+  }
+
+  function readState() {
+    const [s, e] = $('f-period').value.split(':').map(Number);
+    Object.assign(state, {
+      type: $('f-type').querySelector('.active').dataset.v,
+      start: s, end: e,
+      region: $('f-region').value,
+      beds: $('f-beds').value,
+      buyer: $('f-buyer').value,
+      agency: $('f-agency').value,
+    });
+  }
+
+  function matches(r, ignorePeriod = false) {
+    if (!ignorePeriod && (r.m < state.start || r.m > state.end)) return false;
+    if (state.type !== 'all' && r.type !== state.type) return false;
+    if (state.region !== 'all' && r.region !== state.region) return false;
+    if (state.agency !== 'all' && r.agency !== state.agency) return false;
+    if (state.beds !== 'any') {
+      const b = +state.beds;
+      if (b >= 5 ? r.beds < 5 : r.beds !== b) return false;
+    }
+    // Buyer type is only known once a home sells; open listings have no buyer yet,
+    // so they stay in the pipeline when a buyer type is selected.
+    if (state.buyer !== 'all' && r.buyer && r.buyer !== state.buyer) return false;
+    if (state.buyer !== 'all' && !r.buyer && r.status === 'Sold') return false;
+    return true;
+  }
+
+  // ---------- Charts ----------
+  function initCharts() {
+    charts.price = echarts.init($('chart-price'), null, { renderer: 'svg' });
+    charts.sold = echarts.init($('chart-sold'), null, { renderer: 'svg' });
+    charts.buyers = echarts.init($('chart-buyers'), null, { renderer: 'svg' });
+    window.addEventListener('resize', () => Object.values(charts).forEach(c => c.resize()));
+
+    // Click a month (bar or line point) to drill into it; click it again to go back.
+    const monthClick = p => {
+      const i = chartView.start + p.dataIndex;
+      const sel = $('f-period');
+      sel.value = (state.start === i && state.end === i) ? sel.options[0].value : `${i}:${i}`;
+      render();
+    };
+    charts.sold.on('click', monthClick);
+    charts.price.on('click', monthClick);
+    charts.sold.getZr().on('click', e => {           // clicks on the empty part of a bar column
+      if (e.target) return;
+      const pt = [e.offsetX, e.offsetY];
+      if (!charts.sold.containPixel('grid', pt)) return;
+      const idx = charts.sold.convertFromPixel({ seriesIndex: 0 }, pt)[0];
+      if (idx >= 0 && idx <= chartView.end - chartView.start) monthClick({ dataIndex: idx });
+    });
+    // Click a buyer type (donut slice or table row) to filter to it.
+    const toggleBuyer = type => {
+      if (!type) return;
+      $('f-buyer').value = state.buyer === type ? 'all' : type;
+      render();
+    };
+    charts.buyers.on('click', p => toggleBuyer(p.data && p.data.type));
+    $('mix-rows').addEventListener('click', e => { const r = e.target.closest('[data-type]'); if (r) toggleBuyer(r.dataset.type); });
+    // Click an agent to filter to their agency.
+    $('agents').addEventListener('click', e => {
+      const a = e.target.closest('[data-agency]'); if (!a) return;
+      $('f-agency').value = state.agency === a.dataset.agency ? 'all' : a.dataset.agency;
+      render();
+    });
+    const keyActivate = e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[data-type],[data-agency]')) { e.preventDefault(); e.target.click(); } };
+    $('mix-rows').addEventListener('keydown', keyActivate);
+    $('agents').addEventListener('keydown', keyActivate);
+  }
+  const chartView = { start: 0, end: 0 };
+
+  const tooltipBase = {
+    backgroundColor: '#fff', borderColor: C.line, borderWidth: 1, padding: [8, 10],
+    textStyle: { color: C.ink, fontFamily: 'Plus Jakarta Sans', fontSize: 12 },
+    extraCssText: 'border-radius:10px;box-shadow:0 8px 24px rgba(61,15,176,.10);',
+  };
+
+  function niceStep(raw) {
+    if (raw <= 0) return 1;
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const unit = Math.max(1, mag / 2);
+    return Math.ceil(raw / unit) * unit;
+  }
+
+  function renderPriceChart(months, medians, focus = -1) {
+    const vals = medians.filter(v => !isNaN(v));
+    const lo = vals.length ? Math.min(...vals) : 0, hi = vals.length ? Math.max(...vals) : 1;
+    const pad = Math.max((hi - lo) * 0.15, 5000);
+    const lastIdx = focus >= 0 ? focus : medians.reduce((acc, v, i) => isNaN(v) ? acc : i, -1);
+    charts.price.setOption({
+      animationDuration: 500,
+      grid: { left: 44, right: 10, top: 10, bottom: 22 },
+      tooltip: { ...tooltipBase, trigger: 'axis', formatter: p => `${months[p[0].dataIndex].short} ${months[p[0].dataIndex].year}<br><b>${isNaN(p[0].value) ? '—' : fmtK(p[0].value)}</b> median<br><span style="color:${C.muted};font-size:11px">Click to ${focus === p[0].dataIndex ? 'clear' : 'focus this month'}</span>` },
+      xAxis: {
+        type: 'category', data: months.map(m => m.short), boundaryGap: false,
+        axisLine: { show: false }, axisTick: { show: false },
+        axisLabel: { color: C.ink, fontSize: 9, fontFamily: 'Plus Jakarta Sans', interval: i => months.length <= 6 || i === months.length - 1 || (i % 2 === 0 && i < months.length - 2), margin: 10 },
+      },
+      yAxis: {
+        type: 'value', min: Math.floor((lo - pad) / 5000) * 5000, max: Math.ceil((hi + pad) / 5000) * 5000, splitNumber: 3,
+        axisLabel: { color: C.muted, fontSize: 9, fontFamily: 'Plus Jakarta Sans', formatter: v => fmtK(v) },
+        splitLine: { lineStyle: { color: C.line } },
+      },
+      series: [{
+        type: 'line', data: medians.map(v => isNaN(v) ? '-' : v), connectNulls: true,
+        lineStyle: { color: C.primary, width: 2 }, itemStyle: { color: C.primary },
+        symbol: 'circle', symbolSize: (v, p) => p.dataIndex === lastIdx ? (focus >= 0 ? 9 : 7) : 0, showAllSymbol: true,
+        emphasis: { disabled: true }, triggerLineEvent: true,
+        markLine: focus >= 0 ? { silent: true, symbol: 'none', label: { show: false }, lineStyle: { color: C.lav, type: 'dashed', width: 1 }, data: [{ xAxis: focus }] } : undefined,
+      }],
+    }, true);
+  }
+
+  function renderSoldChart(months, counts, focus = -1) {
+    const max = Math.max(1, ...counts);
+    const step = niceStep(max * 1.08 / 4);
+    charts.sold.setOption({
+      animationDuration: 500,
+      grid: { left: 46, right: 8, top: 14, bottom: 26 },
+      tooltip: { ...tooltipBase, trigger: 'axis', axisPointer: { type: 'none' }, formatter: p => `${months[p[0].dataIndex].short} ${months[p[0].dataIndex].year}<br><b>${fmtInt(p[0].value)}</b> homes sold<br><span style="color:${C.muted};font-size:11px">Click to ${focus === p[0].dataIndex ? 'clear' : 'focus this month'}</span>` },
+      xAxis: {
+        type: 'category', data: months.map(m => m.short),
+        axisLine: { show: false }, axisTick: { show: false },
+        axisLabel: { color: C.ink, fontSize: 11, fontFamily: 'Plus Jakarta Sans', margin: 12, interval: 0, hideOverlap: false,
+          formatter: (v, i) => i === focus ? `{f|${v}}` : v, rich: { f: { color: C.primary, fontWeight: 700, fontSize: 11 } } },
+      },
+      yAxis: {
+        type: 'value', min: 0, max: step * 4, interval: step,
+        axisLabel: { color: C.muted, fontSize: 11, fontFamily: 'Plus Jakarta Sans', formatter: v => fmtInt(v) },
+        splitLine: { show: false },
+      },
+      series: [{
+        type: 'bar', barWidth: months.length > 8 ? 12 : 20, cursor: 'pointer',
+        data: counts.map((v, i) => focus >= 0 && i !== focus ? { value: v, itemStyle: { color: C.lav } } : v),
+        itemStyle: { color: C.primary, borderRadius: 8 },
+        showBackground: true, backgroundStyle: { color: C.bar, borderRadius: 8 },
+        emphasis: { itemStyle: { color: '#5A2FD0' } },
+      }],
+    }, true);
+  }
+
+  function renderBuyerChart(mix) {
+    charts.buyers.setOption({
+      animationDuration: 500,
+      tooltip: { ...tooltipBase, trigger: 'item', formatter: p => `${esc(p.name)}<br><b>${fmtInt(p.value)}</b> buyers · ${p.percent.toFixed(0)}%<br><span style="color:${C.muted};font-size:11px">Click to ${state.buyer === (p.data && p.data.type) ? 'show all buyers' : 'filter to this group'}</span>` },
+      series: [{
+        type: 'pie', radius: ['76%', '100%'], center: ['50%', '50%'], startAngle: 90, clockwise: true,
+        avoidLabelOverlap: false, label: { show: false }, labelLine: { show: false },
+        itemStyle: { borderColor: '#fff', borderWidth: 0 },
+        emphasis: { scale: true, scaleSize: 4 },
+        data: mix.length ? mix.map(m => ({ name: BUYER_LABEL[m.type] || m.type, type: m.type, value: m.count, itemStyle: { color: BUYER_COLORS[m.type] || C.lav } }))
+                         : [{ name: 'No buyers', value: 1, itemStyle: { color: C.pale } }],
+      }],
+    }, true);
+  }
+
+  // ---------- Render ----------
+  function setBadge(el, delta, { unit = '%', goodWhenUp = true, decimals = 1 } = {}) {
+    if (delta === null || !isFinite(delta)) { el.style.display = 'none'; return; }
+    el.style.display = '';
+    const r = +delta.toFixed(decimals);
+    const up = r > 0, flat = r === 0;
+    const good = flat ? null : (up === goodWhenUp);
+    el.className = 'badge' + (flat ? ' flat' : good ? '' : ' bad');
+    const num = (up ? '+' : r < 0 ? '−' : '') + Math.abs(r).toFixed(decimals);
+    el.textContent = `${num}${unit === '%' ? '%' : ' ' + unit} ${flat ? '' : up ? '↑' : '↓'}`.trim();
+  }
+
+  function render() {
+    readState();
+    const rows = ROWS.filter(r => matches(r));
+    const sold = rows.filter(r => r.status === 'Sold');
+    const months = MONTHS.slice(state.start, state.end + 1);
+    const n = months.length;
+
+    // Comparison windows: last k months of the period vs the first k months.
+    // A single month is compared with the month before it.
+    const single = n === 1;
+    const k = Math.max(1, Math.floor(n / 4));
+    const canCompare = n >= 2 || (single && state.start > 0);
+    const allSold = single ? ROWS.filter(r => r.status === 'Sold' && matches(r, true)) : sold;
+    const early = single ? allSold.filter(r => r.m === state.start - 1) : sold.filter(r => r.m < state.start + k);
+    const late = single ? sold : sold.filter(r => r.m > state.end - k);
+    const earlyLbl = single ? (state.start > 0 ? MONTHS[state.start - 1].short : '') : rangeLabel(state.start, state.start + k - 1, false);
+    const lateLbl = single ? MONTHS[state.start].short : rangeLabel(state.end - k + 1, state.end, false);
+    const pct = (a, b) => (canCompare && b && isFinite(a) && isFinite(b)) ? (a / b - 1) * 100 : null;
+
+    // KPIs
+    const medPrice = median(sold.map(r => r.sale));
+    $('k-price').textContent = isNaN(medPrice) ? '—' : fmtK(medPrice);
+    $('k-price-sub').textContent = canCompare ? `vs ${earlyLbl}` : 'Selected period';
+    setBadge($('k-price-d'), pct(median(late.map(r => r.sale)), median(early.map(r => r.sale))));
+
+    const ppsf = rs => median(rs.filter(r => r.sqft > 0).map(r => r.sale / r.sqft));
+    const medPpsf = ppsf(sold);
+    $('k-ppsf').textContent = isNaN(medPpsf) ? '—' : '$' + fmtInt(medPpsf);
+    $('k-ppsf-sub').textContent = canCompare ? `vs ${earlyLbl}` : 'Selected period';
+    setBadge($('k-ppsf-d'), pct(ppsf(late), ppsf(early)));
+
+    $('k-sold').textContent = fmtInt(sold.length);
+    $('k-sold-sub').textContent = canCompare ? `${lateLbl} vs ${earlyLbl}` : 'Selected period';
+    setBadge($('k-sold-d'), pct(late.length, early.length));
+
+    const dom = rs => mean(rs.map(r => r.dom).filter(v => !isNaN(v)));
+    const avgDom = dom(sold);
+    $('k-dom').textContent = isNaN(avgDom) ? '—' : `${Math.round(avgDom)} days`;
+    $('k-dom-sub').textContent = canCompare ? `Listing to sale, vs ${earlyLbl}` : 'Listing to sale';
+    const domDelta = canCompare ? dom(late) - dom(early) : null;
+    setBadge($('k-dom-d'), domDelta, { unit: 'days', goodWhenUp: false, decimals: 0 });
+
+    // Monthly series. With a single month selected, the trend charts keep the
+    // full timeline for context and highlight that month.
+    chartView.start = single ? 0 : state.start;
+    chartView.end = single ? MONTHS.length - 1 : state.end;
+    const chartMonths = MONTHS.slice(chartView.start, chartView.end + 1);
+    const byMonth = chartMonths.map(() => []);
+    allSold.forEach(r => { if (r.m >= chartView.start && r.m <= chartView.end) byMonth[r.m - chartView.start].push(r); });
+    const focus = single ? state.start - chartView.start : -1;
+    renderPriceChart(chartMonths, byMonth.map(a => median(a.map(r => r.sale))), focus);
+    renderSoldChart(chartMonths, byMonth.map(a => a.length), focus);
+    const cn = chartMonths.length;
+    $('price-range').textContent = cn === 12 ? 'Last 12 months' : `${cn} months`;
+    $('sold-range').textContent = single ? `${MONTHS[state.start].short} ${MONTHS[state.start].year} selected` : rangeLabel(state.start, state.end);
+    const counts = months.map(m => sold.filter(r => r.m === m.i).length);
+
+    // Annual target (goal pro-rated to the number of months in the period)
+    const goal = Math.round(SALES_GOAL * n / 12);
+    const prog = goal ? sold.length / goal : 0;
+    $('t-sub').textContent = n === 12 ? `Homes sold against the ${fmtInt(goal)} goal` : `Homes sold against the ${fmtInt(goal)} goal (pro-rated, ${n} mo)`;
+    $('t-fill').style.width = Math.min(100, prog * 100) + '%';
+    $('t-progress').textContent = `${fmtInt(sold.length)} · ${Math.round(prog * 100)}%`;
+    $('t-goal').textContent = fmtInt(goal);
+    $('t-needed').textContent = `${fmtInt(Math.max(0, goal - sold.length))} homes`;
+    $('t-avg').textContent = fmtInt(sold.length / n);
+    const best = counts.reduce((bi, c, i) => c > counts[bi] ? i : bi, 0);
+    $('t-best').textContent = counts[best] ? `${months[best].short} · ${fmtInt(counts[best])}` : '—';
+
+    // Buyer mix
+    const groups = new Map();
+    sold.forEach(r => { if (!r.buyer) return; if (!groups.has(r.buyer)) groups.set(r.buyer, []); groups.get(r.buyer).push(r.sale); });
+    const buyerTotal = [...groups.values()].reduce((a, g) => a + g.length, 0);
+    const mix = [...groups.entries()].map(([type, prices]) => ({ type, count: prices.length, share: prices.length / buyerTotal, med: median(prices) }))
+      .sort((a, b) => b.count - a.count);
+    renderBuyerChart(mix);
+    $('b-total').textContent = fmtCompact(buyerTotal);
+    $('mix-rows').innerHTML = mix.length ? mix.map(m => `
+      <div class="mix-row${state.buyer === m.type ? ' selected' : ''}" data-type="${esc(m.type)}" tabindex="0" role="button" title="${state.buyer === m.type ? 'Show all buyers' : 'Filter to ' + esc(BUYER_LABEL[m.type] || m.type)}">
+        <span class="name"><i class="sw" style="background:${BUYER_COLORS[m.type] || C.lav}${m.type === 'Investor' ? ';box-shadow:inset 0 0 0 1px #D9D2F2' : ''}"></i>${esc(BUYER_LABEL[m.type] || m.type)}</span>
+        <span class="pct">${Math.round(m.share * 100)}%</span>
+        <span class="med">${fmtK(m.med)}</span>
+      </div>`).join('') : '<div class="empty">No sales match these filters.</div>';
+    $('insight').innerHTML = insightText(mix, sold);
+
+    // Pipeline: every status, for the last month of the period
+    const pm = MONTHS[state.end];
+    const pipeRows = rows.filter(r => r.m === state.end);
+    const pc = Object.fromEntries(STATUSES.map(s => [s.key, 0]));
+    pipeRows.forEach(r => { if (r.status in pc) pc[r.status]++; });
+    const pTotal = Object.values(pc).reduce((a, b) => a + b, 0);
+    $('p-sub').textContent = `Where ${pm.long}'s ${fmtInt(pTotal)} listings stand`;
+    $('p-bar').innerHTML = STATUSES.filter(s => pc[s.key]).map(s => `<i title="${s.key}: ${fmtInt(pc[s.key])}" style="flex-grow:${pc[s.key]};flex-basis:${s.key === 'Withdrawn' ? '8px' : '0'};background:${s.color}"></i>`).join('')
+      || `<i style="flex-grow:1;background:${C.pale}"></i>`;
+    $('p-stats').innerHTML = STATUSES.map(s => `
+      <div class="pipe-stat">
+        <div class="label"><i style="background:${s.color}"></i>${s.key}</div>
+        <div class="num"><strong>${fmtInt(pc[s.key])}</strong><span>${pTotal ? Math.round(pc[s.key] / pTotal * 100) : 0}%</span></div>
+        <p>${s.key === 'Sold' ? `Closed in ${pm.short}` : s.desc}</p>
+      </div>`).join('');
+
+    const listSum = sold.reduce((a, r) => a + r.list, 0);
+    $('p-stl').textContent = listSum ? Math.round(sold.reduce((a, r) => a + r.sale, 0) / listSum * 100) + '%' : '—';
+    const lastSold = sold.filter(r => r.m === state.end);
+    const lastDom = dom(lastSold);
+    $('p-dts-l').textContent = `Avg days to sell, ${pm.short}`;
+    $('p-dts').textContent = isNaN(lastDom) ? '—' : `${Math.round(lastDom)} days`;
+    const closed = pc['Sold'] + pc['Withdrawn'];
+    $('p-str-l').textContent = `Sell-through rate, ${pm.short}`;
+    $('p-str').textContent = closed ? (pc['Sold'] / closed * 100).toFixed(1) + '%' : '—';
+
+    // Top agents by sales value
+    const ag = new Map();
+    sold.forEach(r => {
+      const a = ag.get(r.agentId) || { name: r.agent, agency: r.agency, value: 0, count: 0 };
+      a.value += r.sale; a.count++; ag.set(r.agentId, a);
+    });
+    const top = [...ag.values()].sort((a, b) => b.value - a.value).slice(0, 4);
+    $('agents').innerHTML = top.length ? top.map(a => `
+      <div class="agent${state.agency === a.agency ? ' selected' : ''}" data-agency="${esc(a.agency)}" tabindex="0" role="button" title="${state.agency === a.agency ? 'Show all agencies' : 'Filter to ' + esc(a.agency)}">
+        <div class="av">${esc(initials(a.name))}</div>
+        <div class="who"><b>${esc(a.name)}</b><span>${esc(shortAgency(a.agency))} · ${fmtInt(a.count)} sales</span></div>
+        <div class="val">${fmtMoney(a.value)}</div>
+      </div>`).join('') : '<div class="empty">No sales match these filters.</div>';
+
+    // Sidebar note
+    const regionCount = new Set(sold.map(r => r.region)).size;
+    $('refresh-note').textContent = `${fmtInt(sold.length)} sales · ${regionCount} region${regionCount === 1 ? '' : 's'} · source: fact_sales.csv`;
+  }
+
+  function insightText(mix, sold) {
+    if (!mix.length) return '<b>Insight:</b> no sold homes match these filters — try widening them.';
+    const top = mix[0];
+    const name = (BUYER_LABEL[top.type] || top.type).toLowerCase();
+    if (state.buyer !== 'all') {
+      const regions = new Map();
+      sold.forEach(r => regions.set(r.regionName, (regions.get(r.regionName) || 0) + 1));
+      const [rn, rc] = [...regions.entries()].sort((a, b) => b[1] - a[1])[0];
+      const where = regions.size > 1 ? `; ${esc(rn)} drew the most (${Math.round(rc / sold.length * 100)}%)` : ` in ${esc(rn)}`;
+      return `<b>Insight:</b> ${esc(name)} bought ${fmtInt(top.count)} home${top.count === 1 ? '' : 's'} at a ${fmtK(top.med)} median${where}.`;
+    }
+    return `<b>Insight:</b> ${esc(name)} are the biggest group, buying ${Math.round(top.share * 100)}% of all homes sold.`;
+  }
+})();
+</script>
+</body>
+</html>
